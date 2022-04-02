@@ -26,9 +26,7 @@ export const createUserMw = asyncMw(async (req, res, next) => {
   if (exist) return res.status(400).json(exist);
 
   const data = await repository.user.resourceToModel(req.body);
-  const user = await repository.user.create(data);
-
-  req.user = user;
+  req.user = await repository.user.create(data as any);
 
   return next();
 });
@@ -108,4 +106,10 @@ export const loginMw = asyncMw(async (req, res) => {
   const token = signAccessToken(_.pick(user, ['id', 'email']), req.body.always);
 
   return res.json({ id: user.id, token });
+});
+
+export const isAdminMw = asyncMw(async (req, res, next) => {
+  if (!req.isAdmin) return res.status(403).json({ message: 'Forbidden' });
+
+  return next();
 });

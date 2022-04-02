@@ -17,9 +17,6 @@ profileRepository.modelToResource = async (profile: ModelStructure['profile']) =
 // by doing this, we can have an intellisense
 const extendsprofileRepository = {};
 
-const repository = {
-  ...profileRepository,
-  ...extendsprofileRepository,
-};
+const repository = _.merge(profileRepository, extendsprofileRepository);
 
 export default repository;

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { hashText } from '../utils/encryption';
 import factory, { ModelStructure } from './baseRepository';
 
-const { models, ...userRepostiory } = factory('user');
+const { ...userRepostiory } = factory('user');
 
 userRepostiory.resourceToModel = async (resource: any) => {
   const user = _.pick(resource, ['email', 'username', 'password']);
@@ -59,9 +59,6 @@ const extendsUserRepository = {
   checkEmailUsername,
 };
 
-const repository = {
-  ...userRepostiory,
-  ...extendsUserRepository,
-};
+const repository = _.merge(userRepostiory, extendsUserRepository);
 
 export default repository;
