@@ -31,6 +31,7 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
+    "@krsbx/prisma-fqp": "^0.1.0",
     "@prisma/client": "^3.11.1",
     "@types/lodash": "^4.14.181",
     "async-express-mw": "^0.1.1",

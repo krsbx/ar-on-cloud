@@ -32,19 +32,27 @@ export const createRow =
 
 export const findAll =
   (model: Model = 'user') =>
-  (conditions: any, filterQueryParams: any = {}, options: any = {}) => {
+  async (conditions: any, filterQueryParams: any = {}, options: any = {}) => {
     const limit = +(options.limit === 'all' ? 0 : _.get(options, 'limit', 10));
     const offset = options.page && options.page > 0 ? limit * (options.page - 1) : 0;
     const otherOptions = _.omit(options, ['limit', 'offset']);
 
-    const where = { ...conditions, ...otherOptions };
+    const where = { ...conditions, ...filterQueryParams, ...otherOptions };
 
-    // @ts-ignore
-    return prisma[model].findMany({
-      where,
-      skip: offset,
-      take: limit,
-    });
+    return {
+      // @ts-ignore
+      rows: await prisma[model].findMany({
+        where,
+        skip: offset,
+        take: limit,
+      }),
+      count: /* @ts-ignore */ (
+        await prisma[model].aggregate({
+          where,
+          _count: true,
+        })
+      )._count,
+    };
   };
 
 export const findOne =

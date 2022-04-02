@@ -89,9 +89,12 @@ export const returnUserMw = asyncMw(async (req, res) => {
 });
 
 export const returnUsersMw = asyncMw(async (req, res) => {
-  return res.json(
-    await Promise.all(_.map(req.users, (user) => repository.user.modelToResource(user)))
-  );
+  return res.json({
+    rows: await Promise.all(
+      _.map(_.get(req.users, 'rows'), (user) => repository.user.modelToResource(user))
+    ),
+    count: _.get(req.users, 'count'),
+  });
 });
 
 export const loginMw = asyncMw(async (req, res) => {
