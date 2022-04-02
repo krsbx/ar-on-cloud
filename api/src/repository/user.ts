@@ -26,10 +26,37 @@ const getProfile = async (id: number | string) => {
   return user;
 };
 
+const checkEmailUsername = async (
+  email: string,
+  username: string,
+  id: string | number | null = null
+) => {
+  const checkEmail = await userRepostiory.findOne({
+    email,
+  });
+
+  if (checkEmail && (id ? checkEmail.id !== id : true))
+    return {
+      message: 'Email already in use',
+    };
+
+  const checkUsername = await userRepostiory.findOne({
+    username,
+  });
+
+  if (checkUsername && (id ? checkUsername.id !== id : true))
+    return {
+      message: 'Username already in use',
+    };
+
+  return;
+};
+
 // use for extending the user repository
 // by doing this, we can have an intellisense
 const extendsUserRepository = {
   getProfile,
+  checkEmailUsername,
 };
 
 const repository = {
