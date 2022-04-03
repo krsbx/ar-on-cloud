@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import * as user from '../middleware/users';
-import profile from './profile';
+import profileRoute from './profile';
+import postsRoutes from './posts';
+import commentsRoutes from './comments';
 
 const router = Router();
 
@@ -30,6 +32,12 @@ router.patch(
 router.delete('/:id', user.authMw, user.getUserMw, user.deleteUserMw);
 
 // ALL /users/:id/profile
-router.use('/:id/profile', user.authMw, user.getUserMw, profile);
+router.use('/:id/profile', user.authMw, user.getUserMw, profileRoute);
+
+// ALL /users/:id/posts
+router.use('/:id/posts', user.authMw, user.getUserMw, postsRoutes);
+
+// ALL /users/:id/comments
+router.use('/:id/comments', user.authMw, user.getUserMw, commentsRoutes);
 
 export default router;

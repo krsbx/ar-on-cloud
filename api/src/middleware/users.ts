@@ -26,7 +26,7 @@ export const createUserMw = asyncMw(async (req, res, next) => {
   if (exist) return res.status(400).json(exist);
 
   const data = await repository.user.resourceToModel(req.body);
-  req.user = await repository.user.create(data as any);
+  req.user = await repository.user.create(data);
 
   return next();
 });
@@ -89,9 +89,9 @@ export const returnUserMw = asyncMw(async (req, res) => {
 export const returnUsersMw = asyncMw(async (req, res) => {
   return res.json({
     rows: await Promise.all(
-      _.map(_.get(req.users, 'rows'), (user) => repository.user.modelToResource(user))
+      _.map(_.get(req.users, 'rows', []), (user) => repository.user.modelToResource(user))
     ),
-    count: _.get(req.users, 'count'),
+    count: _.get(req.users, 'count', 0),
   });
 });
 

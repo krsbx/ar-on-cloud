@@ -3,6 +3,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
@@ -10,10 +11,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    indent: 'off',
-    'implicit-arrow-linebreak': 'off',
-    'function-paren-newline': 'off',
-    'operator-linebreak': 'off',
-    'no-unused-vars': 'warn',
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/': 'off',
   },
 };
