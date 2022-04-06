@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import _ from 'lodash';
 import jwtToken from 'jsonwebtoken';
 
 const jwtSecret = _.get(process.env, 'JWT_SECRET');
 
-export const signAccessToken = (payload: any, always: boolean = false) =>
+export const signAccessToken = (payload: any, always = false) =>
   jwtToken.sign(payload, jwtSecret!, { ...(!always && { expiresIn: '3h' }) });
 
+// eslint-disable-next-line no-underscore-dangle
 const _verifyAccessToken = (token: string): Promise<any> =>
   new Promise((resolve) => {
     jwtToken.verify(token, jwtSecret!, (err, decoded) => {
@@ -15,6 +18,6 @@ const _verifyAccessToken = (token: string): Promise<any> =>
     });
   });
 
-export const verifyAccessToken = async (token: string) => await _verifyAccessToken(token);
+export const verifyAccessToken = async (token: string) => _verifyAccessToken(token);
 
 export default { signAccessToken, verifyAccessToken };
