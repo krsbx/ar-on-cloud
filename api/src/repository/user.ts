@@ -49,7 +49,7 @@ const checkEmailUsername = async (
       message: 'Username already in use',
     };
 
-  return;
+  return null;
 };
 
 // use for extending the user repository

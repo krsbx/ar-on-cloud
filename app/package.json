@@ -6,9 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "eslint --fix --config .eslintrc.json"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.8.7",
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@uiw/react-md-editor": "^3.11.2",
+    "framer-motion": "^6.2.8",
     "next": "12.1.4",
     "react": "18.0.0",
     "react-dom": "18.0.0"
