@@ -59,8 +59,10 @@ export const returnProfileMw = asyncMw(async (req, res) => {
 export const returnProfilesMw = asyncMw(async (req, res) => {
   return res.json({
     rows: await Promise.all(
-      _.map(_.get(req.profiles, 'rows'), (profile) => repository.profile.modelToResource(profile))
+      _.map(_.get(req.profiles, 'rows', []), (profile) =>
+        repository.profile.modelToResource(profile)
+      )
     ),
-    count: _.get(req.profiles, 'count'),
+    count: _.get(req.profiles, 'count', 0),
   });
 });

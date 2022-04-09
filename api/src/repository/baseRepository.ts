@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // Use for the base repository/model sources
 import _ from 'lodash';
-import { PrismaClient, Profile, User } from '@prisma/client';
+import { PrismaClient, Profile, User, Post, Comment } from '@prisma/client';
 
 export const prisma = new PrismaClient();
 
@@ -20,6 +22,8 @@ export type Model = keyof Omit<
 export type ModelStructure = {
   user: User;
   profile: Profile;
+  post: Post;
+  comment: Comment;
 };
 
 export const createRow =
@@ -31,8 +35,8 @@ export const createRow =
     });
 
 export const findAll =
-  (model: Model = 'user') =>
-  async (conditions: any, filterQueryParams: any = {}, options: any = {}) => {
+  <T extends Model>(model: T) =>
+  async (conditions: any, filterQueryParams: any = {}, options: any = {}, include: any = {}) => {
     const limit = +(options.limit === 'all' ? 0 : _.get(options, 'limit', 10));
     const offset = options.page && options.page > 0 ? limit * (options.page - 1) : 0;
     const otherOptions = _.omit(options, ['limit', 'offset']);
@@ -43,6 +47,7 @@ export const findAll =
       // @ts-ignore
       rows: await prisma[model].findMany({
         where,
+        ...(!_.isEmpty(include) && { include }),
         skip: offset,
         take: limit,
       }),
@@ -56,12 +61,12 @@ export const findAll =
   };
 
 export const findOne =
-  (model: Model) =>
+  <T extends Model>(model: T) =>
   (conditions: object | string | number, option: any = {}) => {
     const dbCond = _.isObject(conditions) ? conditions : { id: _.toNumber(conditions) };
 
     // @ts-ignore
-    return prisma[model].findFirst({ where: dbCond }, option);
+    return prisma[model].findFirst({ where: dbCond, ...option });
   };
 
 export const updateRow =
@@ -74,12 +79,14 @@ export const updateRow =
     return prisma[model].update({ data: dbData, where: dbCond });
   };
 
-export const deleteRow = (model: Model) => (conditions: object | string | number) => {
-  const dbCond = _.isObject(conditions) ? conditions : { id: _.toNumber(conditions) };
+export const deleteRow =
+  <T extends Model>(model: T) =>
+  (conditions: object | string | number) => {
+    const dbCond = _.isObject(conditions) ? conditions : { id: _.toNumber(conditions) };
 
-  // @ts-ignore
-  return prisma[model].delete({ where: dbCond });
-};
+    // @ts-ignore
+    return prisma[model].delete({ where: dbCond });
+  };
 
 export const modelToResource = async (model: any) => model;
 
