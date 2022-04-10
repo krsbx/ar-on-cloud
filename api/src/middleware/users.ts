@@ -103,7 +103,7 @@ export const loginMw = asyncMw(async (req, res) => {
   if (!(await compareText(req.body.password, user.password)))
     return res.status(401).json({ message: 'Invalid password' });
 
-  const token = signAccessToken(_.pick(user, ['id', 'email']), req.body.always);
+  const token = signAccessToken(_.pick(user, ['id', 'role']), req.body.always);
 
   return res.json({ id: user.id, token });
 });

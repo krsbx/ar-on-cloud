@@ -76,7 +76,9 @@ export const deleteCommentMw = asyncMw(async (req, res) => {
 export const returnCommentMw = asyncMw(async (req, res) => {
   return res.status(200).json({
     ...(await repository.comment.modelToResource(req.comment)),
-    user: await repository.user.modelToResource(req.comment.user),
+    ...(req.comment.user && {
+      user: await repository.user.modelToResource(req.comment.user),
+    }),
   });
 });
 
@@ -85,7 +87,9 @@ export const returnCommentsMw = asyncMw(async (req, res) => {
     rows: await Promise.all(
       _.map(_.get(req.comments, 'rows', []), async (comment) => ({
         ...(await repository.comment.modelToResource(comment)),
-        user: await repository.user.modelToResource(comment.user),
+        ...(comment.user && {
+          user: await repository.user.modelToResource(comment.user),
+        }),
       }))
     ),
     count: _.get(req.comments, 'count', 0),

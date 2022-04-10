@@ -13,10 +13,12 @@ export const createPostMw = asyncMw(async (req, res, next) => {
 
 export const getPostMw = asyncMw(async (req, res, next) => {
   const post = await repository.post.findOne(req.params.id, {
-    include: {
-      // Get the user who posted the post
-      user: true,
-    },
+    ...(!req.user && {
+      include: {
+        // Get the user who posted the post
+        user: true,
+      },
+    }),
   });
 
   if (!post) return res.status(404).json({ message: 'Post not found' });
@@ -35,9 +37,11 @@ export const getPostsMw = asyncMw(async (req, res, next) => {
     },
     req.filterQueryParams,
     req.query,
-    {
-      user: true,
-    }
+    !_.isEmpty(req.users)
+      ? {
+          user: true,
+        }
+      : {}
   );
 
   return next();
@@ -67,7 +71,9 @@ export const deletePostMw = asyncMw(async (req, res) => {
 export const returnPostMw = asyncMw(async (req, res) => {
   return res.status(200).json({
     ...(await repository.post.modelToResource(req.post)),
-    user: await repository.user.modelToResource(req.post.user),
+    ...(req.post.user && {
+      user: await repository.user.modelToResource(req.post.user),
+    }),
   });
 });
 
@@ -76,7 +82,9 @@ export const returnPostsMw = asyncMw(async (req, res) => {
     rows: await Promise.all(
       _.map(_.get(req.posts, 'rows', []), async (post) => ({
         ...(await repository.post.modelToResource(post)),
-        user: await repository.user.modelToResource(post.user),
+        ...(post.user && {
+          user: await repository.user.modelToResource(post.user),
+        }),
       }))
     ),
     count: _.get(req.posts, 'count', 0),
