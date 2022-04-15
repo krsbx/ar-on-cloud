@@ -51,3 +51,40 @@ export const SECTION1: ISection1[] = [
     },
   },
 ];
+
+export const SECTION2: ITextSide[] = [
+  {
+    title: 'Upload and Done!',
+    description: [
+      'You only need to upload the marker and the 3D model to start using AR on web!',
+      'By uploading the marker and the 3D model, you can make everyone around the world use your AR!',
+      "If you doesn't want your marker to be public, you can upload it as hidden.",
+      'By making it hidden, only people who knew the link can access your AR.',
+    ],
+  },
+  {
+    title: 'Share your creations!',
+    description: [
+      'You can share your AR creations with your friends and family!',
+      'By sharing it, anyone with the link can see your 3D model creations using AR!',
+      'Think of it as a social media but for AR!',
+    ],
+  },
+  {
+    title: 'Go wild and have fun!',
+    description: [
+      'You can have fun with your creations!',
+      'You can make your creations even more fun by adding some animations!',
+      'You can even interact with other people creations and giving them a feedback!',
+    ],
+  },
+  {
+    title: 'Just another social media!',
+    description: [
+      'If you tired of the current social media, you can use AR on web!',
+      'The purpose of AR on web is to make people around the world use AR!',
+      "'Cause AR will make process of sharing your idea a lot easier!",
+      'People can easliy know what are you doing and what is your goal!',
+    ],
+  },
+];

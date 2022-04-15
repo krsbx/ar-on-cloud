@@ -4,45 +4,16 @@ import { UserLayout } from '../pageLayout';
 
 const AboutMe = () => {
   return (
-    <UserLayout>
-      <Flex height={'100%'} width={'100%'} alignItems={'center'} justifyContent={'center'}>
-        <Flex
-          width={'sm'}
-          height={'xl'}
-          flexDirection={'column'}
-          userSelect={'none'}
-          transition={'all 0.3s ease-in-out'}
-          borderRadius={'2xl'}
-          _hover={{
-            boxShadow: '2xl',
-          }}
-        >
-          <Flex
-            alignItems={'center'}
-            justifyContent={'center'}
-            flexDirection={'column'}
-            height={'50%'}
-            bg={'#183241'}
-            borderTopRadius={'2xl'}
-          >
-            <Text color={'white'} fontWeight={'bold'} fontSize={20}>
-              KRSBX
+    <UserLayout marginTop>
+      <Flex height={'100%'} width={'100%'} justifyContent={'center'} bg={'blackAlpha.400'}>
+        <Grid templateColumns={'repeat(2, 1fr)'} gap={3}>
+          <GridItem>
+            <Text fontSize={20} fontWeight={'bold'}>
+              About Me
             </Text>
-            <Text color={'tomato'} fontWeight={'bold'} fontSize={20}>
-              Developer
-            </Text>
-          </Flex>
-          <Flex
-            alignItems={'center'}
-            justifyContent={'center'}
-            flexDirection={'column'}
-            height={'50%'}
-            bg={'whiteAlpha.300'}
-            borderBottomRadius={'2xl'}
-          >
-            Github Twitter Instagram
-          </Flex>
-        </Flex>
+          </GridItem>
+          <GridItem></GridItem>
+        </Grid>
       </Flex>
     </UserLayout>
   );

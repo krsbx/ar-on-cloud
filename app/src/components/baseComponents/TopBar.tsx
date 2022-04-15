@@ -1,31 +1,19 @@
 /* eslint-disable react/display-name */
-import React, { createRef, useState, useEffect } from 'react';
-import { Flex, Grid, GridItem, HStack, Link, LinkProps, useMergeRefs } from '@chakra-ui/react';
+import React from 'react';
+import { Flex, Grid, GridItem, HStack, Link, LinkProps } from '@chakra-ui/react';
 
-const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(({ children, scrollPos }, ref) => {
-  const [topbarHeight, setTopbarHeight] = useState<number>(48);
-  const internalRef = createRef<HTMLDivElement>();
-  const refs = useMergeRefs(internalRef, ref);
-
-  const isTransparent = scrollPos < topbarHeight * 1.5;
-
+const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(({ children }, ref) => {
   const linkStyle: LinkProps = {
-    color: isTransparent ? 'white' : 'blackAlpha.600',
-    ...(isTransparent && {
-      fontWeight: 'bold',
-    }),
+    transition: 'all 0.3s ease-in-out',
+    color: 'blackAlpha.600',
+    bg: 'blackAlpha.100',
     rounded: 'md',
     p: 2,
     _hover: {
-      color: isTransparent ? 'white' : 'blackAlpha.900',
-      fontWeight: 'bold',
-      textDecoration: 'underline',
+      bg: 'blackAlpha.300',
+      color: 'blackAlpha.900',
     },
   };
-
-  useEffect(() => {
-    if (internalRef.current) setTopbarHeight(internalRef.current.clientHeight);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Grid
@@ -33,13 +21,11 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(({ children, scroll
       alignItems={'center'}
       templateColumns={'repeat(3, 1fr)'}
       userSelect={'none'}
-      position={'fixed'}
-      transition={'all 0.3s ease-in-out'}
-      bg={isTransparent ? 'transparent' : 'gray.200'}
+      bg={'gray.200'}
       gap={2}
       p={2}
       px={4}
-      ref={refs}
+      ref={ref}
     >
       <GridItem>
         <Link
@@ -49,6 +35,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(({ children, scroll
             color: 'blackAlpha.900',
           }}
           fontWeight={'bold'}
+          transition={'all 0.3s ease-in-out'}
         >
           @KRSBX
         </Link>
@@ -64,9 +51,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(({ children, scroll
         </HStack>
       </GridItem>
       <GridItem>
-        <Flex justifyContent={'flex-end'}>
-          {children && React.cloneElement(children, { isTransparent })}
-        </Flex>
+        <Flex justifyContent={'flex-end'}>{children}</Flex>
       </GridItem>
     </Grid>
   );
@@ -74,7 +59,6 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(({ children, scroll
 
 type TopBarProps = {
   children?: React.ReactElement;
-  scrollPos: number;
 };
 
 export default TopBar;
