@@ -14,6 +14,10 @@ export interface ISection1 {
   imageSide: IImageSide;
 }
 
+export interface ISection2 extends ITextSide {
+  imagePath: string;
+}
+
 export const SECTION1: ISection1[] = [
   {
     textSide: {
@@ -30,6 +34,7 @@ export const SECTION1: ISection1[] = [
       src: 'images/augmented-reality.jpg',
       alt: 'Augmented Reality Illustration',
       width: '500px',
+      userSelect: 'none',
     },
   },
   {
@@ -48,11 +53,12 @@ export const SECTION1: ISection1[] = [
       src: 'images/presentation.jpg',
       alt: 'Augmented Reality Illustration',
       width: '500px',
+      userSelect: 'none',
     },
   },
 ];
 
-export const SECTION2: ITextSide[] = [
+export const SECTION2: ISection2[] = [
   {
     title: 'Upload and Done!',
     description: [
@@ -61,6 +67,7 @@ export const SECTION2: ITextSide[] = [
       "If you doesn't want your marker to be public, you can upload it as hidden.",
       'By making it hidden, only people who knew the link can access your AR.',
     ],
+    imagePath: '/images/landing/cards/upload.jpg',
   },
   {
     title: 'Share your creations!',
@@ -69,6 +76,7 @@ export const SECTION2: ITextSide[] = [
       'By sharing it, anyone with the link can see your 3D model creations using AR!',
       'Think of it as a social media but for AR!',
     ],
+    imagePath: '/images/landing/cards/share.jpg',
   },
   {
     title: 'Go wild and have fun!',
@@ -77,6 +85,7 @@ export const SECTION2: ITextSide[] = [
       'You can make your creations even more fun by adding some animations!',
       'You can even interact with other people creations and giving them a feedback!',
     ],
+    imagePath: '/images/landing/cards/fun.jpg',
   },
   {
     title: 'Just another social media!',
@@ -86,5 +95,6 @@ export const SECTION2: ITextSide[] = [
       "'Cause AR will make process of sharing your idea a lot easier!",
       'People can easliy know what are you doing and what is your goal!',
     ],
+    imagePath: '/images/landing/cards/social.jpg',
   },
 ];
