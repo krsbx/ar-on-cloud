@@ -25,8 +25,15 @@ export const createUserMw = asyncMw(async (req, res, next) => {
   const exist = await repository.user.checkEmailUsername(req.body.email, req.body.username);
   if (exist) return res.status(400).json(exist);
 
+  if (!req.isAdmin) delete req.body.role;
+
   const data = await repository.user.resourceToModel(req.body);
   req.user = await repository.user.create(data);
+
+  if (!req.userAuth)
+    return res.json({
+      message: 'User registered successfully',
+    });
 
   return next();
 });

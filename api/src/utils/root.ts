@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import authsRoutes from '../routes/auths';
 import usersRoutes from '../routes/users';
 import profilesRoutes from '../routes/profiles';
 import postsRoutes from '../routes/posts';
@@ -10,6 +11,7 @@ export default (app: Express) => {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.static('public'));
   app.get('*', queryParserMw);
+  app.use('/auths', authsRoutes);
   app.use('/users', usersRoutes);
   app.use('/profiles', profilesRoutes);
   app.use('/posts', postsRoutes);

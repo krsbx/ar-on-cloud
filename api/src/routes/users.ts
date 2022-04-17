@@ -6,9 +6,6 @@ import commentsRoutes from './comments';
 
 const router = Router();
 
-// POST /users/login
-router.post('/login', user.loginMw);
-
 // POST /users
 router.post('/', user.authMw, user.createUserMw, user.returnUserMw);
 
