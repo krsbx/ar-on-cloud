@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { Flex, Text, Link } from '@chakra-ui/react';
 import { UserLayout } from '../pageLayout';
 import FirstSection from './landingPage/FirstSection';
 import SecondSection from './landingPage/SecondSection';
 
 const LandingPage = () => {
+  const contentRef = createRef<HTMLDivElement>();
+
   return (
-    <UserLayout>
+    <UserLayout contentRef={contentRef}>
       <Flex alignItems={'center'} width={'100%'} flexDirection={'column'} pb={7}>
         <Flex
           bgPosition={'center'}

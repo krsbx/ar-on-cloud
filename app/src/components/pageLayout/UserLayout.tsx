@@ -6,9 +6,8 @@ import { useIsAuthenticated } from 'src/utils/sessionUtils';
 import useTopBarHeight from 'src/utils/useTopbarHeight';
 import useSmoothScrollbar from 'src/utils/useSmoothSrollbar';
 
-const UserLayout: React.FC = ({ children }) => {
+const UserLayout: React.FC<Props> = ({ children, contentRef }) => {
   const topbarRef = createRef<HTMLDivElement>();
-  const contentRef = createRef<HTMLDivElement>();
   const topBarHeight = useTopBarHeight(topbarRef);
   const isAuth = useIsAuthenticated();
 
@@ -30,6 +29,10 @@ const UserLayout: React.FC = ({ children }) => {
       </Flex>
     </Flex>
   );
+};
+
+type Props = {
+  contentRef?: React.RefObject<HTMLDivElement>;
 };
 
 export default UserLayout;

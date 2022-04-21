@@ -17,13 +17,15 @@
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@uiw/react-md-editor": "^3.11.2",
+    "formik": "^2.2.9",
     "framer-motion": "^6.2.8",
     "jwt-decode": "^3.1.2",
     "next": "12.1.4",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "sass": "^1.50.0",
-    "smooth-scrollbar": "^8.7.4"
+    "smooth-scrollbar": "^8.7.4",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "17.0.23",
