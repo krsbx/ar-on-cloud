@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import asyncMw from 'async-express-mw';
+import asyncMw from 'fork-async-express-mw';
 import repository from '../repository';
 
 export const createCommentMw = asyncMw(async (req, res, next) => {
@@ -87,6 +87,9 @@ export const returnCommentsMw = asyncMw(async (req, res) => {
     rows: await Promise.all(
       _.map(_.get(req.comments, 'rows', []), async (comment) => ({
         ...(await repository.comment.modelToResource(comment)),
+        ...(comment.post && {
+          post: await repository.post.modelToResource(comment.post),
+        }),
         ...(comment.user && {
           user: await repository.user.modelToResource(comment.user),
         }),

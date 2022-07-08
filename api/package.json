@@ -37,18 +37,18 @@
     "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^2.0.15",
     "prettier": "^2.6.1",
-    "prisma": "^3.11.1",
+    "prisma": "^4.0.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.3"
   },
   "dependencies": {
     "@krsbx/prisma-fqp": "^0.1.0",
-    "@prisma/client": "^3.11.1",
-    "async-express-mw": "^0.1.1",
+    "@prisma/client": "^4.0.0",
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
     "dotenv-expand": "^8.0.3",
     "express": "^4.17.3",
+    "fork-async-express-mw": "^0.1.2-a",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.1"

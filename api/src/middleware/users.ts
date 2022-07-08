@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import asyncMw from 'async-express-mw';
+import asyncMw from 'fork-async-express-mw';
 import repository from '../repository';
 import { compareText } from '../utils/encryption';
 import { signAccessToken, verifyAccessToken } from '../utils/token';

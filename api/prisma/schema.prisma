@@ -17,9 +17,9 @@ enum Role {
 
 model Profile {
   id        Int      @id @default(autoincrement())
-  firstName String?
-  lastName  String?
-  bio       String?
+  firstName String?  @default("")
+  lastName  String?  @default("")
+  bio       String?  @default("")
   user      User     @relation(fields: [userId], references: [id])
   userId    Int      @unique
   createdAt DateTime @default(now())
@@ -55,8 +55,8 @@ model Comment {
   content   String
   user      User     @relation(fields: [userId], references: [id])
   userId    Int
-  Post      Post?    @relation(fields: [postId], references: [id])
-  postId    Int?
+  Post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
