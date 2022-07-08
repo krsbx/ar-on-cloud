@@ -10,9 +10,24 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
+import { connect, ConnectedProps } from 'react-redux';
 import { loginSchema } from 'src/utils/formSchema';
+import { userLogin as _userLogin } from 'src/store/actions/currentUser';
+import { UserLoginPayload } from 'src/utils/interfaces/payloadsReponses';
+import useErrorToast from 'src/utils/useErrorToast';
 
-const LoginModal = () => {
+const LoginModal = ({ userLogin, onClose }: Props) => {
+  const toast = useErrorToast();
+
+  const onSubmit = async (values: UserLoginPayload) => {
+    try {
+      await userLogin(values);
+      onClose();
+    } catch (err) {
+      toast(err);
+    }
+  };
+
   return (
     <Formik
       initialValues={{
@@ -21,9 +36,7 @@ const LoginModal = () => {
         always: false,
       }}
       validationSchema={loginSchema}
-      onSubmit={() => {
-        return;
-      }}
+      onSubmit={onSubmit}
     >
       {({ handleBlur, handleSubmit, handleChange, values, errors, touched }) => (
         <Form
@@ -55,28 +68,25 @@ const LoginModal = () => {
                 onBlur={handleBlur('password')}
                 onChange={handleChange('password')}
                 title={'Password'}
+                type={'password'}
                 required
               />
               {!!errors.password && touched.password && (
                 <FormErrorMessage>{errors.password}</FormErrorMessage>
               )}
             </FormControl>
-            <FormControl isInvalid={!!errors.always && touched.always} userSelect={'none'}>
+            <FormControl userSelect={'none'}>
               <HStack spacing={2}>
                 <Checkbox
                   checked={values.always}
                   onBlur={handleBlur('always')}
                   onChange={handleChange('always')}
                   title={'Remember Me?'}
-                  required
                 />
                 <FormLabel>Remember Me?</FormLabel>
-                {!!errors.always && touched.always && (
-                  <FormErrorMessage>{errors.always}</FormErrorMessage>
-                )}
               </HStack>
             </FormControl>
-            <Button>Login</Button>
+            <Button type={'submit'}>Login</Button>
           </VStack>
         </Form>
       )}
@@ -84,4 +94,12 @@ const LoginModal = () => {
   );
 };
 
-export default LoginModal;
+const connector = connect(null, {
+  userLogin: _userLogin,
+});
+
+type Props = ConnectedProps<typeof connector> & {
+  onClose: () => void;
+};
+
+export default connector(LoginModal);

@@ -113,7 +113,9 @@ const Anonymous: React.FC<Props> = ({ isTransparent = false }) => {
             </HStack>
             <ModalCloseButton />
           </ModalHeader>
-          <ModalBody>{isLogin ? <LoginModal /> : <RegisterModal />}</ModalBody>
+          <ModalBody>
+            {isLogin ? <LoginModal onClose={onClose} /> : <RegisterModal setIsLogin={setIsLogin} />}
+          </ModalBody>
         </ModalContent>
       </Modal>
     </React.Fragment>

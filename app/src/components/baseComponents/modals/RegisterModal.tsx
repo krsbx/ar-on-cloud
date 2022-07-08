@@ -1,9 +1,25 @@
 import React from 'react';
 import { Button, Input, FormControl, FormLabel, FormErrorMessage, VStack } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
+import { connect, ConnectedProps } from 'react-redux';
 import { registerSchema } from 'src/utils/formSchema';
+import { userRegister as _userRegister } from 'src/store/actions/currentUser';
+import { UserRegisterPayload } from 'src/utils/interfaces/payloadsReponses';
+import useErrorToast from 'src/utils/useErrorToast';
+import { ReactSetter } from 'src/utils/interfaces/global';
 
-const RegisterModal = () => {
+const RegisterModal = ({ userRegister, setIsLogin }: Props) => {
+  const toast = useErrorToast();
+
+  const onSubmit = async (values: UserRegisterPayload) => {
+    try {
+      await userRegister(values);
+      setIsLogin(true);
+    } catch (err) {
+      toast(err);
+    }
+  };
+
   return (
     <Formik
       initialValues={{
@@ -12,9 +28,7 @@ const RegisterModal = () => {
         username: '',
       }}
       validationSchema={registerSchema}
-      onSubmit={() => {
-        return;
-      }}
+      onSubmit={onSubmit}
     >
       {({ handleBlur, handleSubmit, handleChange, values, errors, touched }) => (
         <Form
@@ -60,6 +74,7 @@ const RegisterModal = () => {
                 onBlur={handleBlur('password')}
                 onChange={handleChange('password')}
                 title={'Password'}
+                type={'password'}
                 required
               />
               {!!errors.password && touched.password && (
@@ -74,4 +89,12 @@ const RegisterModal = () => {
   );
 };
 
-export default RegisterModal;
+const connector = connect(null, {
+  userRegister: _userRegister,
+});
+
+type Props = ConnectedProps<typeof connector> & {
+  setIsLogin: ReactSetter<boolean>;
+};
+
+export default connector(RegisterModal);
