@@ -45,8 +45,8 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(({ children }, ref)
           <Link href="/" {...linkStyle}>
             Home
           </Link>
-          <Link href="/about-me" {...linkStyle}>
-            About Me
+          <Link href="/about-us" {...linkStyle}>
+            About Us
           </Link>
         </HStack>
       </GridItem>

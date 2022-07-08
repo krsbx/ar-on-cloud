@@ -24,6 +24,7 @@ const UserLayout: React.FC<Props> = ({ children, contentRef }) => {
         height={`calc(100vh - ${topBarHeight}px)`}
         overflow={'auto'}
         ref={contentRef}
+        pb={10}
       >
         {children}
       </Flex>

@@ -1,4 +1,4 @@
-import AboutMePage from './AboutMePage';
+import AboutUsPage from './AboutUsPage';
 import LandingPage from './LandingPage';
 
-export { AboutMePage, LandingPage };
+export { AboutUsPage, LandingPage };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import NextLink from 'next/link';
 import {
   HStack,
   Link,
@@ -68,26 +69,47 @@ const Anonymous: React.FC<Props> = ({ isTransparent = false }) => {
         <ModalOverlay />
         <ModalContent p={3}>
           <ModalHeader>
-            <HStack alignItems={'center'} spacing={3} justifyContent={'center'}>
-              <Link
-                href={'#register'}
-                onClick={() => setIsLogin(false)}
-                _focus={{
-                  outline: 'none',
-                }}
-              >
-                <Text {...modalHeaderStyle(!isLogin)}>Register</Text>
-              </Link>
+            <HStack
+              alignItems={'center'}
+              spacing={3}
+              justifyContent={'center'}
+              textTransform={'uppercase'}
+            >
+              <NextLink href={'#register'} passHref>
+                <Link
+                  onClick={() => setIsLogin(false)}
+                  w={'100px'}
+                  textAlign={'center'}
+                  _focus={{
+                    outline: 'none',
+                  }}
+                  _hover={{
+                    textDecoration: 'none',
+                    backgroundColor: 'blackAlpha.100',
+                    borderRadius: 'md',
+                  }}
+                >
+                  <Text {...modalHeaderStyle(!isLogin)}>Register</Text>
+                </Link>
+              </NextLink>
               <Text>|</Text>
-              <Link
-                href={'#login'}
-                onClick={() => setIsLogin(true)}
-                _focus={{
-                  outline: 'none',
-                }}
-              >
-                <Text {...modalHeaderStyle(isLogin)}>Login</Text>
-              </Link>
+              <NextLink href={'#login'} passHref>
+                <Link
+                  onClick={() => setIsLogin(true)}
+                  w={'100px'}
+                  textAlign={'center'}
+                  _focus={{
+                    outline: 'none',
+                  }}
+                  _hover={{
+                    textDecoration: 'none',
+                    backgroundColor: 'blackAlpha.100',
+                    borderRadius: 'md',
+                  }}
+                >
+                  <Text {...modalHeaderStyle(isLogin)}>Login</Text>
+                </Link>
+              </NextLink>
             </HStack>
             <ModalCloseButton />
           </ModalHeader>
