@@ -105,7 +105,7 @@ export const returnUsersMw = asyncMw(async (req, res) => {
 export const loginMw = asyncMw(async (req, res) => {
   const user = await repository.user.findOne({ email: req.body.email });
 
-  if (!user) return res.status(401).json({ message: 'User not found' });
+  if (!user) return res.status(404).json({ message: 'User not found' });
 
   if (!(await compareText(req.body.password, user.password)))
     return res.status(401).json({ message: 'Invalid password' });
