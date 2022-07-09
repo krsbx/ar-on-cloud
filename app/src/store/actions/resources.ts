@@ -36,7 +36,7 @@ export const getAllData =
   };
 
 export const getDataById =
-  <T extends ResourceKey>(resourceName: T, id: number, query = '', overwrite = false) =>
+  <T extends ResourceKey>(resourceName: T, id: number | string, query = '', overwrite = false) =>
   async () => {
     const { data } = await axios.get<ResourceMap[T]>(`/${resourceName}/${id}?${query}`, {
       headers: {

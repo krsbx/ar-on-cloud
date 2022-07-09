@@ -10,6 +10,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
+import { useRouter } from 'next/router';
 import { connect, ConnectedProps } from 'react-redux';
 import { loginSchema } from 'src/utils/formSchema';
 import { userLogin as _userLogin } from 'src/store/actions/currentUser';
@@ -17,12 +18,15 @@ import { UserLoginPayload } from 'src/utils/interfaces/payloadsReponses';
 import useErrorToast from 'src/utils/useErrorToast';
 
 const LoginModal = ({ userLogin, onClose }: Props) => {
+  const router = useRouter();
   const toast = useErrorToast();
 
   const onSubmit = async (values: UserLoginPayload) => {
     try {
       await userLogin(values);
       onClose();
+
+      router.push('dashboard');
     } catch (err) {
       toast(err);
     }

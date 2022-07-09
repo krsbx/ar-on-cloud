@@ -19,7 +19,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(({ children }, ref)
     <Grid
       width={'100vw'}
       alignItems={'center'}
-      templateColumns={'repeat(3, 1fr)'}
+      templateColumns={'repeat(2, 1fr)'}
       userSelect={'none'}
       bg={'gray.200'}
       gap={2}
@@ -28,20 +28,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(({ children }, ref)
       ref={ref}
     >
       <GridItem>
-        <Link
-          href="/about-me"
-          color="blackAlpha.600"
-          _hover={{
-            color: 'blackAlpha.900',
-          }}
-          fontWeight={'bold'}
-          transition={'all 0.3s ease-in-out'}
-        >
-          @KRSBX
-        </Link>
-      </GridItem>
-      <GridItem>
-        <HStack spacing={2} justifyContent={'center'}>
+        <HStack spacing={2} justifyContent={'flex-start'}>
           <Link href="/" {...linkStyle}>
             Home
           </Link>

@@ -21,7 +21,19 @@ const LandingPage = () => {
           width={'100%'}
           flexDirection={'column'}
         >
-          <Text color="white" fontWeight="bold" fontSize={{ base: 15, md: 20 }} py={2}>
+          <Text
+            color="white"
+            fontWeight="bold"
+            px={2}
+            py={2}
+            textAlign={'center'}
+            textShadow={'0px 10px 20px rgba(0, 0, 0, 1)'}
+            fontSize={{
+              base: 15,
+              sm: 17,
+              md: 20,
+            }}
+          >
             Use Augmented Reality on Website now!
           </Text>
           <Link
@@ -59,16 +71,14 @@ const LandingPage = () => {
               boxShadow={'lg'}
               transition={'all 0.3s ease-in-out'}
               p={3}
+              px={4}
               _hover={{
                 bg: 'whiteAlpha.900',
               }}
             >
-              Go Wild!
+              Create AR Now!
             </Link>
           </Flex>
-          <Text fontStyle={'italic'} fontSize={16}>
-            Be wild with your AR!
-          </Text>
         </Flex>
       </Flex>
     </UserLayout>

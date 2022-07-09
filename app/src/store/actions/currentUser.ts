@@ -1,7 +1,5 @@
 import axios from '../axios';
-import { getDataById } from './resources';
 import { setToken, setUserId } from 'src/utils/cookieUtils';
-import { RESOURCE_NAME } from 'src/utils/constant';
 import { AppDispatch } from '..';
 import { CURRENT_USER_TYPE } from '../reducers/currentUser';
 import {
@@ -9,6 +7,7 @@ import {
   UserLoginResponse,
   UserRegisterPayload,
 } from 'src/utils/interfaces/payloadsReponses';
+import { getUserById } from './users';
 
 export const userLogin = (payload: UserLoginPayload) => async (dispatch: AppDispatch) => {
   const { data } = await axios.post<UserLoginResponse>('/auth/login', payload);
@@ -16,7 +15,7 @@ export const userLogin = (payload: UserLoginPayload) => async (dispatch: AppDisp
   setToken(data.token);
   setUserId(data.id);
 
-  const user = await getDataById(RESOURCE_NAME.USER, data.id)();
+  const user = await getUserById(data.id)();
 
   dispatch({
     type: CURRENT_USER_TYPE.SET,

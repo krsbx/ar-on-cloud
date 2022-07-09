@@ -24,13 +24,14 @@ const Anonymous: React.FC<Props> = ({ isTransparent = false }) => {
   const linkStyle: LinkProps = {
     bg: isTransparent ? 'transparent' : 'blackAlpha.100',
     color: isTransparent ? 'white' : 'blackAlpha.600',
-    fontWeight: isTransparent ? 'bold' : 'normal',
+    fontWeight: isTransparent ? 'bold' : 'semibold',
     rounded: 'md',
     py: 2,
     px: 5,
     transition: 'all 0.3s ease-in-out',
     _hover: {
       bg: isTransparent ? 'blackAlpha.100' : 'blackAlpha.300',
+      color: 'black',
     },
   };
 
@@ -44,26 +45,28 @@ const Anonymous: React.FC<Props> = ({ isTransparent = false }) => {
   return (
     <React.Fragment>
       <HStack spacing={3}>
-        <Link
-          href={'#register'}
-          {...linkStyle}
-          onClick={() => {
-            onOpen();
-            setIsLogin(false);
-          }}
-        >
-          Register
-        </Link>
-        <Link
-          href={'#login'}
-          {...linkStyle}
-          onClick={() => {
-            onOpen();
-            setIsLogin(true);
-          }}
-        >
-          Login
-        </Link>
+        <NextLink href={'#register'} passHref>
+          <Link
+            {...linkStyle}
+            onClick={() => {
+              onOpen();
+              setIsLogin(false);
+            }}
+          >
+            Register
+          </Link>
+        </NextLink>
+        <NextLink href={'#login'} passHref>
+          <Link
+            {...linkStyle}
+            onClick={() => {
+              onOpen();
+              setIsLogin(true);
+            }}
+          >
+            Login
+          </Link>
+        </NextLink>
       </HStack>
       <Modal isOpen={isOpen} onClose={onClose} closeOnEsc isCentered>
         <ModalOverlay />

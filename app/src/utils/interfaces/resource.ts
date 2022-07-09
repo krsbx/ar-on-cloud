@@ -44,10 +44,10 @@ export type Comment = {
 export type ResourceKey = typeof RESOURCE_NAME[keyof typeof RESOURCE_NAME];
 
 export type ResourceMap = {
-  [RESOURCE_NAME.USER]: User;
-  [RESOURCE_NAME.PROFILE]: Profile;
-  [RESOURCE_NAME.POST]: Post;
-  [RESOURCE_NAME.COMMENT]: Comment;
+  [RESOURCE_NAME.USERS]: User;
+  [RESOURCE_NAME.PROFILES]: Profile;
+  [RESOURCE_NAME.POSTS]: Post;
+  [RESOURCE_NAME.COMMENTS]: Comment;
 };
 
 export type ResourceStructure<T extends ResourceKey> = {
@@ -58,8 +58,8 @@ export type ResourceStructure<T extends ResourceKey> = {
 };
 
 export type Resources = {
-  [RESOURCE_NAME.USER]: ResourceStructure<'user'>;
-  [RESOURCE_NAME.PROFILE]: ResourceStructure<'profile'>;
-  [RESOURCE_NAME.POST]: ResourceStructure<'post'>;
-  [RESOURCE_NAME.COMMENT]: ResourceStructure<'comment'>;
+  [RESOURCE_NAME.USERS]: ResourceStructure<'users'>;
+  [RESOURCE_NAME.PROFILES]: ResourceStructure<'profiles'>;
+  [RESOURCE_NAME.POSTS]: ResourceStructure<'posts'>;
+  [RESOURCE_NAME.COMMENTS]: ResourceStructure<'comments'>;
 };
