@@ -1,21 +1,32 @@
 import _ from 'lodash';
-import factory, { ModelStructure } from './baseRepository';
+import { Prisma } from '@prisma/client';
+import { AnyRecord } from '../utils/interface';
+import BaseRepository, { ModelStructure } from './baseRepository';
 
-const { ...profileRepository } = factory('profile');
+const profileRepository = new BaseRepository<
+  Prisma.ProfileWhereInput,
+  Prisma.ProfileSelect,
+  Prisma.ProfileInclude,
+  Prisma.ProfileCreateInput,
+  Prisma.ProfileUpdateInput,
+  Prisma.ProfileWhereUniqueInput,
+  Prisma.ProfileOrderByWithRelationInput
+>('profile');
 
-profileRepository.resourceToModel = async (resource: any) => {
+const resourceToModel = async (resource: AnyRecord) => {
   const profile = _.pick(resource, ['firstName', 'lastName', 'bio', 'userId']);
 
   return profile;
 };
 
-profileRepository.modelToResource = async (profile: ModelStructure['profile']) => {
+const modelToResource = async (profile: ModelStructure['profile']) => {
   return _.omit(profile, ['createdAt', 'updatedAt']);
 };
 
-// use for extending the profile repository
-// by doing this, we can have an intellisense
-const extendsprofileRepository = {};
+const extendsprofileRepository = {
+  resourceToModel,
+  modelToResource,
+};
 
 const repository = _.merge(profileRepository, extendsprofileRepository);
 

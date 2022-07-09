@@ -1,23 +1,33 @@
 import _ from 'lodash';
+import { Prisma } from '@prisma/client';
 import { hashText } from '../utils/encryption';
-import factory, { ModelStructure } from './baseRepository';
+import BaseRepository, { ModelStructure } from './baseRepository';
+import { AnyRecord } from '../utils/interface';
 
-const { ...userRepostiory } = factory('user');
+const userRepository = new BaseRepository<
+  Prisma.UserWhereInput,
+  Prisma.UserSelect,
+  Prisma.UserInclude,
+  Prisma.UserCreateInput,
+  Prisma.UserUpdateInput,
+  Prisma.UserWhereUniqueInput,
+  Prisma.UserOrderByWithRelationInput
+>('user');
 
-userRepostiory.resourceToModel = async (resource: any) => {
+const resourceToModel = async (resource: AnyRecord) => {
   const user = _.pick(resource, ['email', 'username', 'password']);
 
   if (resource.password) user.password = await hashText(resource.password);
 
-  return user;
+  return user as Prisma.UserCreateInput;
 };
 
-userRepostiory.modelToResource = async (user: ModelStructure['user']) => {
+const modelToResource = async (user: ModelStructure['user']) => {
   return _.omit(user, ['password', 'updatedAt']);
 };
 
-const getProfile = async (id: number | string) => {
-  const user = await userRepostiory.findOne(id, {
+const getProfile = async (id: Prisma.UserWhereInput | string | number) => {
+  const user = await userRepository.findOne(id, {
     include: {
       profile: true,
     },
@@ -31,7 +41,7 @@ const checkEmailUsername = async (
   username: string,
   id: string | number | null = null
 ) => {
-  const checkEmail = await userRepostiory.findOne({
+  const checkEmail = await userRepository.findOne({
     email,
   });
 
@@ -40,7 +50,7 @@ const checkEmailUsername = async (
       message: 'Email already in use',
     };
 
-  const checkUsername = await userRepostiory.findOne({
+  const checkUsername = await userRepository.findOne({
     username,
   });
 
@@ -52,13 +62,13 @@ const checkEmailUsername = async (
   return null;
 };
 
-// use for extending the user repository
-// by doing this, we can have an intellisense
 const extendsUserRepository = {
   getProfile,
   checkEmailUsername,
+  modelToResource,
+  resourceToModel,
 };
 
-const repository = _.merge(userRepostiory, extendsUserRepository);
+const repository = _.merge(userRepository, extendsUserRepository);
 
 export default repository;

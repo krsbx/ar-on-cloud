@@ -39,10 +39,14 @@ export const createUserMw = asyncMw(async (req, res, next) => {
 });
 
 export const getUserMw = asyncMw(async (req, res, next) => {
-  if (req.userAuth.id !== parseInt(req.params.id, 10) && !req.isAdmin)
-    return res.status(403).json({ message: 'Forbidden' });
+  // Get the user from the database base on the id or the username
+  const isUsingId = !_.isNaN(+_.get(req, 'params.id'));
 
-  const user = await repository.user.getProfile(req.params.id);
+  const user = isUsingId
+    ? await repository.user.getProfile(req.params.id)
+    : await repository.user.getProfile({
+        username: req.params.id,
+      });
 
   if (!user) return res.status(404).json({ message: 'User not found' });
 
@@ -58,7 +62,7 @@ export const getUsersMw = asyncMw(async (req, res, next) => {
 });
 
 export const updateUserMw = asyncMw(async (req, res, next) => {
-  if (req.userAuth.id !== parseInt(req.params.id, 10) && !req.isAdmin)
+  if (req.userAuth.id !== +req.params.id && !req.isAdmin)
     return res.status(403).json({ message: 'Forbidden' });
 
   if (!req.isAdmin) delete req.body.role;
@@ -79,7 +83,7 @@ export const updateUserMw = asyncMw(async (req, res, next) => {
 });
 
 export const deleteUserMw = asyncMw(async (req, res) => {
-  if (req.userAuth.id !== parseInt(req.params.id, 10) && !req.isAdmin)
+  if (req.userAuth.id !== +req.params.id && !req.isAdmin)
     return res.status(403).json({ message: 'Forbidden' });
 
   await repository.user.delete(req.params.id);

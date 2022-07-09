@@ -3,7 +3,7 @@ import repository from '../repository';
 
 export const createProfileMw = asyncMw(async (req, res, next) => {
   const profile = await repository.profile.findOne({
-    userid: req.user.id,
+    userId: req.user.id,
   });
 
   if (profile) {
@@ -21,7 +21,7 @@ export const createProfileMw = asyncMw(async (req, res, next) => {
 
 export const getProfileMw = asyncMw(async (req, res, next) => {
   const profile = await repository.profile.findOne({
-    userid: req.user.id,
+    userId: req.user.id,
   });
 
   if (!profile) return res.status(404).json({ message: 'Profile not found' });
