@@ -1,6 +1,4 @@
 import express, { Express } from 'express';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import cors from 'cors';
 import authsRoutes from '../routes/auths';
 import usersRoutes from '../routes/users';

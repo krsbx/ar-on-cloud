@@ -1,5 +1,6 @@
 import { Prisma } from './instance';
 import { hashText } from '../../src/utils/encryption';
+import { USER_ROLE } from '../../src/utils/constant';
 
 const main = async (prisma: Prisma) => {
   await prisma.user.createMany({
@@ -8,13 +9,11 @@ const main = async (prisma: Prisma) => {
         username: 'admin',
         email: 'admin@admin.com',
         password: await hashText('admin'),
-        role: 'ADMIN',
+        role: USER_ROLE.ADMIN,
       },
     ],
     skipDuplicates: true,
   });
 };
 
-export default function (prisma: Prisma) {
-  return main(prisma);
-}
+export default main;

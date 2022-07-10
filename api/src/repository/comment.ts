@@ -1,9 +1,9 @@
 import { Prisma } from '@prisma/client';
 import _ from 'lodash';
 import { AnyRecord } from '../utils/interface';
-import BaseRepository, { ModelStructure } from './baseRepository';
+import factory, { ModelStructure } from './baseRepository';
 
-const commentRepository = new BaseRepository<
+const commentRepository = factory<
   Prisma.CommentWhereInput,
   Prisma.CommentSelect,
   Prisma.CommentInclude,

@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { Prisma } from '@prisma/client';
 import { AnyRecord } from '../utils/interface';
-import BaseRepository, { ModelStructure } from './baseRepository';
+import factory, { ModelStructure } from './baseRepository';
 
-const postRepository = new BaseRepository<
+const postRepository = factory<
   Prisma.PostWhereInput,
   Prisma.PostSelect,
   Prisma.PostInclude,

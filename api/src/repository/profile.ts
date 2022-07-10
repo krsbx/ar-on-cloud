@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { Prisma } from '@prisma/client';
 import { AnyRecord } from '../utils/interface';
-import BaseRepository, { ModelStructure } from './baseRepository';
+import factory, { ModelStructure } from './baseRepository';
 
-const profileRepository = new BaseRepository<
+const profileRepository = factory<
   Prisma.ProfileWhereInput,
   Prisma.ProfileSelect,
   Prisma.ProfileInclude,
