@@ -1,17 +1,8 @@
-import { Prisma } from '@prisma/client';
 import _ from 'lodash';
-import { AnyRecord } from '../utils/interface';
-import factory, { ModelStructure } from './baseRepository';
+import { AnyRecord, ModelStructure, MODELS_NAME } from './models';
+import factory from './baseRepository';
 
-const commentRepository = factory<
-  Prisma.CommentWhereInput,
-  Prisma.CommentSelect,
-  Prisma.CommentInclude,
-  Prisma.CommentCreateInput,
-  Prisma.CommentUpdateInput,
-  Prisma.CommentWhereUniqueInput,
-  Prisma.CommentOrderByWithRelationInput
->('comment');
+const commentRepository = factory(MODELS_NAME.COMMENT);
 
 const resourceToModel = async (resource: AnyRecord) => {
   const comment = _.pick(resource, ['content', 'userId', 'postId']);

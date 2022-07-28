@@ -1,17 +1,8 @@
 import _ from 'lodash';
-import { Prisma } from '@prisma/client';
-import { AnyRecord } from '../utils/interface';
-import factory, { ModelStructure } from './baseRepository';
+import { AnyRecord, ModelStructure, MODELS_NAME } from './models';
+import factory from './baseRepository';
 
-const postRepository = factory<
-  Prisma.PostWhereInput,
-  Prisma.PostSelect,
-  Prisma.PostInclude,
-  Prisma.PostCreateInput,
-  Prisma.PostUpdateInput,
-  Prisma.PostWhereUniqueInput,
-  Prisma.PostOrderByWithRelationInput
->('post');
+const postRepository = factory(MODELS_NAME.POST);
 
 const resourceToModel = async (resource: AnyRecord) => {
   const post = _.pick(resource, ['title', 'content', 'userId']);

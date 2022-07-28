@@ -1,17 +1,8 @@
 import _ from 'lodash';
-import { Prisma } from '@prisma/client';
-import { AnyRecord } from '../utils/interface';
-import factory, { ModelStructure } from './baseRepository';
+import { AnyRecord, ModelStructure, MODELS_NAME } from './models';
+import factory from './baseRepository';
 
-const profileRepository = factory<
-  Prisma.ProfileWhereInput,
-  Prisma.ProfileSelect,
-  Prisma.ProfileInclude,
-  Prisma.ProfileCreateInput,
-  Prisma.ProfileUpdateInput,
-  Prisma.ProfileWhereUniqueInput,
-  Prisma.ProfileOrderByWithRelationInput
->('profile');
+const profileRepository = factory(MODELS_NAME.PROFILE);
 
 const resourceToModel = async (resource: AnyRecord) => {
   const profile = _.pick(resource, ['firstName', 'lastName', 'bio', 'userId']);
