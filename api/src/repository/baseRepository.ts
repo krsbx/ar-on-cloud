@@ -35,8 +35,15 @@ export class BaseRepository<
     this.modelName = modelName;
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  extractCondition(conditions: Where | number | string) {
+    const dbCond = _.isObject(conditions) ? conditions : { id: _.toNumber(conditions) };
+
+    return dbCond;
+  }
+
   async findAll(
-    conditions: Where,
+    conditions: Where | number | string,
     filterQueryParams: AnyRecord = {},
     options: AnyRecord = {},
     include: Include = {} as Include
@@ -45,23 +52,18 @@ export class BaseRepository<
     const offset = options.page && options.page > 0 ? limit * (options.page - 1) : 0;
     const otherOptions = _.omit(options, ['limit', 'offset', 'page']);
 
-    const where = { ...conditions, ...filterQueryParams, ...otherOptions };
+    const where = { ...this.extractCondition(conditions), ...filterQueryParams, ...otherOptions };
 
     return {
       // @ts-ignore
-      rows: (await models[this.modelName].findMany({
+      rows: (await this.model.findMany({
         where,
         ...(!_.isEmpty(include) && { include }),
         skip: offset,
         ...(limit > 0 && { take: limit }),
       })) as Model[],
-      // eslint-disable-next-line no-underscore-dangle
-      count: /* @ts-ignore */ (
-        await models[this.modelName].aggregate({
-          where,
-          _count: true,
-        })
-      )._count as number,
+      /* @ts-ignore */
+      count: await this.model.count({ where }),
     };
   }
 
@@ -69,18 +71,18 @@ export class BaseRepository<
     conditions: Where | number | string,
     option: Find<Select, Include, Cursor, Order, Scalar> = {}
   ) {
-    const dbCond = _.isObject(conditions) ? conditions : { id: _.toNumber(conditions) };
+    const where = this.extractCondition(conditions);
 
     // @ts-ignore
-    return models[this.modelName].findFirst({
-      where: dbCond,
+    return this.model.findFirst({
+      where,
       ...option,
     }) as Promise<Model>;
   }
 
   async create(data: Create, option: BaseOption<Include, Select> = {}) {
     // @ts-ignore
-    return models[this.modelName].create({
+    return this.model.create({
       data,
       ...option,
     }) as Promise<Model>;
@@ -91,22 +93,22 @@ export class BaseRepository<
     data: Update | Create,
     option: BaseOption<Include, Select> = {}
   ) {
-    const dbCond = _.isObject(conditions) ? conditions : { id: _.toNumber(conditions) };
+    const where = this.extractCondition(conditions);
 
     // @ts-ignore
-    return models[this.modelName].update({
+    return this.model.update({
       data,
-      where: dbCond,
+      where,
       ...option,
     }) as Promise<Model>;
   }
 
   async delete(conditions: Where | number | string) {
-    const dbCond = _.isObject(conditions) ? conditions : { id: _.toNumber(conditions) };
+    const where = this.extractCondition(conditions);
 
     // @ts-ignore
-    return models[this.modelName].deleteMany({
-      where: dbCond,
+    return this.model.deleteMany({
+      where,
     }) as Promise<Prisma.BatchPayload>;
   }
 
@@ -124,7 +126,7 @@ export class BaseRepository<
 
   async bulkCreate(data: Prisma.Enumerable<Create>, skipDuplicates = true) {
     // @ts-ignore
-    return models[this.modelName].createMany({
+    return this.model.createMany({
       data,
       skipDuplicates,
     }) as Promise<Prisma.BatchPayload>;
@@ -132,7 +134,7 @@ export class BaseRepository<
 
   async bulkUpdate(where: Where, data: Prisma.Enumerable<Update>) {
     // @ts-ignore
-    return models[this.modelName].updateMany({
+    return this.model.updateMany({
       data,
       where,
     }) as Promise<Prisma.BatchPayload>;

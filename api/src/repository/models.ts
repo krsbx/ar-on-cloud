@@ -64,8 +64,8 @@ export type ModelTypes = {
     Where: Prisma.ProfileWhereInput;
     Select: Prisma.ProfileSelect;
     Include: Prisma.ProfileInclude;
-    Create: Prisma.ProfileCreateInput;
-    Update: Prisma.ProfileUpdateInput;
+    Create: Prisma.ProfileCreateInput | Prisma.ProfileUncheckedCreateInput;
+    Update: Prisma.ProfileUpdateInput | Prisma.ProfileUncheckedUpdateInput;
     Cursor: Prisma.ProfileWhereUniqueInput;
     Order: Prisma.ProfileOrderByWithRelationInput;
     Delegate: Prisma.ProfileDelegate<ModelDelegate>;
@@ -74,8 +74,8 @@ export type ModelTypes = {
     Where: Prisma.UserWhereInput;
     Select: Prisma.UserSelect;
     Include: Prisma.UserInclude;
-    Create: Prisma.UserCreateInput;
-    Update: Prisma.UserUpdateInput;
+    Create: Prisma.UserCreateInput | Prisma.UserUncheckedCreateInput;
+    Update: Prisma.UserUpdateInput | Prisma.UserUncheckedUpdateInput;
     Cursor: Prisma.UserWhereUniqueInput;
     Order: Prisma.UserOrderByWithRelationInput;
     Delegate: Prisma.UserDelegate<ModelDelegate>;
@@ -84,8 +84,8 @@ export type ModelTypes = {
     Where: Prisma.PostWhereInput;
     Select: Prisma.PostSelect;
     Include: Prisma.PostInclude;
-    Create: Prisma.PostCreateInput;
-    Update: Prisma.PostUpdateInput;
+    Create: Prisma.PostCreateInput | Prisma.PostUncheckedCreateInput;
+    Update: Prisma.PostUpdateInput | Prisma.PostUncheckedUpdateInput;
     Cursor: Prisma.PostWhereUniqueInput;
     Order: Prisma.PostOrderByWithRelationInput;
     Delegate: Prisma.PostDelegate<ModelDelegate>;
@@ -94,10 +94,20 @@ export type ModelTypes = {
     Where: Prisma.CommentWhereInput;
     Select: Prisma.CommentSelect;
     Include: Prisma.CommentInclude;
-    Create: Prisma.CommentCreateInput;
-    Update: Prisma.CommentUpdateInput;
+    Create: Prisma.CommentCreateInput | Prisma.CommentUncheckedCreateInput;
+    Update: Prisma.CommentUpdateInput | Prisma.CommentUncheckedUpdateInput;
     Cursor: Prisma.CommentWhereUniqueInput;
     Order: Prisma.CommentOrderByWithRelationInput;
     Delegate: Prisma.CommentDelegate<ModelDelegate>;
+  };
+  package: {
+    Where: Prisma.PackageWhereInput;
+    Select: Prisma.PackageSelect;
+    Include: Prisma.CommentInclude;
+    Create: Prisma.PackageCreateInput | Prisma.PackageUncheckedCreateInput;
+    Update: Prisma.PackageUpdateInput | Prisma.PackageUncheckedUpdateInput;
+    Cursor: Prisma.PackageWhereUniqueInput;
+    Order: Prisma.PackageOrderByWithRelationInput;
+    Delegate: Prisma.PackageDelegate<ModelDelegate>;
   };
 };
