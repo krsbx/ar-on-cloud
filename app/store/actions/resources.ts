@@ -1,61 +1,74 @@
-import { ResourceKey, ResourceMap } from 'utils/interfaces/resource';
-import { AppDispatch } from '..';
-import axios from '../axios';
+import axios from 'store/axios';
 
-export const setResource = (resourceName: ResourceKey, data: unknown) => ({
+export const setResource = (resourceName: CloudAR.Resource.ResourceKey, data: unknown) => ({
   type: `resources.${resourceName}.set`,
   data,
 });
 
-export const updateResource = (resourceName: ResourceKey, data: unknown) => ({
+export const updateResource = (resourceName: CloudAR.Resource.ResourceKey, data: unknown) => ({
   type: `resources.${resourceName}.update`,
   data, // { id, data }
 });
 
-export const overwriteResource = (resourceName: ResourceKey, data: unknown) => ({
+export const overwriteResource = (resourceName: CloudAR.Resource.ResourceKey, data: unknown) => ({
   type: `resources.${resourceName}.overwrite`,
   data,
 });
 
-export const deleteResource = (resourceName: ResourceKey, data: unknown) => ({
+export const deleteResource = (resourceName: CloudAR.Resource.ResourceKey, data: unknown) => ({
   type: `resources.${resourceName}.delete`,
   data, // id
 });
 
 export const getAllData =
-  <T extends ResourceKey>(resourceName: T, query = '', overwrite = true) =>
+  <T extends CloudAR.Resource.ResourceKey>(resourceName: T, query = '', overwrite = true) =>
   async () => {
-    const { data } = await axios.get<ResourceMap[T][]>(`/${resourceName}?${query}`, {
-      headers: {
-        resourceName,
-        overwrite,
-      },
-    });
+    const { data } = await axios.get<CloudAR.Resource.ResourceMap[T][]>(
+      `/${resourceName}?${query}`,
+      {
+        headers: {
+          resourceName,
+          overwrite,
+        },
+      }
+    );
 
-    return data;
+    return data as CloudAR.Resource.ResourceMap[T][];
   };
 
 export const getDataById =
-  <T extends ResourceKey>(resourceName: T, id: number | string, query = '', overwrite = false) =>
+  <T extends CloudAR.Resource.ResourceKey>(
+    resourceName: T,
+    id: number | string,
+    query = '',
+    overwrite = false
+  ) =>
   async () => {
-    const { data } = await axios.get<ResourceMap[T]>(`/${resourceName}/${id}?${query}`, {
-      headers: {
-        resourceName,
-        overwrite,
-      },
-    });
+    const { data } = await axios.get<CloudAR.Resource.ResourceMap[T]>(
+      `/${resourceName}/${id}?${query}`,
+      {
+        headers: {
+          resourceName,
+          overwrite,
+        },
+      }
+    );
 
-    return data;
+    return data as CloudAR.Resource.ResourceMap[T];
   };
 
 export const addData =
-  <T extends ResourceKey>(resourceName: T, payload: unknown) =>
-  async (dispatch: AppDispatch) => {
-    const { data } = await axios.post<ResourceMap[T]>(`/${resourceName}`, payload, {
-      headers: {
-        resourceName,
-      },
-    });
+  <T extends CloudAR.Resource.ResourceKey>(resourceName: T, payload: unknown) =>
+  async (dispatch: CloudAR.Store.AppDispatch) => {
+    const { data } = await axios.post<CloudAR.Resource.ResourceMap[T]>(
+      `/${resourceName}`,
+      payload,
+      {
+        headers: {
+          resourceName,
+        },
+      }
+    );
 
     dispatch(
       updateResource(resourceName, {
@@ -64,25 +77,29 @@ export const addData =
       })
     );
 
-    return data;
+    return data as CloudAR.Resource.ResourceMap[T];
   };
 
 export const updateData =
-  <T extends ResourceKey>(resourceName: T) =>
+  <T extends CloudAR.Resource.ResourceKey>(resourceName: T) =>
   (id: number, update: unknown, query = '') =>
   async () => {
-    const { data } = await axios.patch<ResourceMap[T]>(`/${resourceName}/${id}?${query}`, update, {
-      headers: {
-        resourceName,
-      },
-    });
+    const { data } = await axios.patch<CloudAR.Resource.ResourceMap[T]>(
+      `/${resourceName}/${id}?${query}`,
+      update,
+      {
+        headers: {
+          resourceName,
+        },
+      }
+    );
 
-    return data;
+    return data as CloudAR.Resource.ResourceMap[T];
   };
 
 export const deleteData =
-  <T extends ResourceKey>(resourceName: T, id: number) =>
-  async (dispatch: AppDispatch) => {
+  <T extends CloudAR.Resource.ResourceKey>(resourceName: T, id: number) =>
+  async (dispatch: CloudAR.Store.AppDispatch) => {
     await axios.delete(`/${resourceName}/${id}`);
 
     dispatch(deleteResource(resourceName, id));

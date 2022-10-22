@@ -1,5 +1,6 @@
-import { RESOURCE_NAME } from '../constant';
-import { UserRole } from './global';
+import { RESOURCE_NAME, USER_ROLE } from 'utils/constant';
+
+export type UserRole = typeof USER_ROLE[keyof typeof USER_ROLE];
 
 export type Profile = {
   id: number;
@@ -58,8 +59,8 @@ export type ResourceStructure<T extends ResourceKey> = {
 };
 
 export type Resources = {
-  [RESOURCE_NAME.USERS]: ResourceStructure<'users'>;
-  [RESOURCE_NAME.PROFILES]: ResourceStructure<'profiles'>;
-  [RESOURCE_NAME.POSTS]: ResourceStructure<'posts'>;
-  [RESOURCE_NAME.COMMENTS]: ResourceStructure<'comments'>;
+  [RESOURCE_NAME.USERS]: ResourceStructure<typeof RESOURCE_NAME.USERS>;
+  [RESOURCE_NAME.PROFILES]: ResourceStructure<typeof RESOURCE_NAME.PROFILES>;
+  [RESOURCE_NAME.POSTS]: ResourceStructure<typeof RESOURCE_NAME.POSTS>;
+  [RESOURCE_NAME.COMMENTS]: ResourceStructure<typeof RESOURCE_NAME.COMMENTS>;
 };

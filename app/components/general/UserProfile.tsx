@@ -3,9 +3,8 @@ import _ from 'lodash';
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { getUserById as _getUserById } from 'store/actions/users';
-import { User } from 'utils/interfaces/resource';
 
-const UserProfile = ({ user }: Props) => {
+const UserProfile: ReactFC<Props> = ({ user }) => {
   return (
     <Box
       boxShadow={'0px 10px 40px rgba(0, 0, 0, 0.1)'}
@@ -37,7 +36,7 @@ const connector = connect(null, {
 });
 
 type Props = ConnectedProps<typeof connector> & {
-  user: User | null;
+  user: CloudAR.Resource.User | null;
 };
 
 export default connector(UserProfile);

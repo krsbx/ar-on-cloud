@@ -1,12 +1,11 @@
-import { ResourceKey } from 'utils/interfaces/resource';
-import { AppState } from '..';
+import { AppState } from 'store';
 
 export const getResources =
-  <T extends ResourceKey>(resourceName: T) =>
+  <T extends CloudAR.Resource.ResourceKey>(resourceName: T) =>
   (state: AppState) =>
-    state.resources[resourceName];
+    state.resources[resourceName] as CloudAR.Resource.Resources[T];
 
 export const getResourceById =
-  <T extends ResourceKey>(resourceName: T, id: number) =>
+  <T extends CloudAR.Resource.ResourceKey>(resourceName: T, id: number) =>
   (state: AppState) =>
-    getResources(resourceName)(state)['rows'][id];
+    getResources(resourceName)(state)['rows'][id] as CloudAR.Resource.ResourceMap[T];

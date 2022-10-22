@@ -10,7 +10,7 @@ const composeEnhancers =
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
-applyInterceptors(store.dispatch, store.getState);
+applyInterceptors(store.dispatch);
 
 export type AppDispatch = typeof store.dispatch;
 export type AppState = ReturnType<typeof rootReducer>;

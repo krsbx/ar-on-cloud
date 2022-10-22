@@ -2,11 +2,10 @@ import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { hasOwnProperty } from 'utils/common';
 import { RESOURCE_NAME } from 'utils/constant';
-import { ResourceKey, ResourceMap, Resources, ResourceStructure } from 'utils/interfaces/resource';
 
 const defaultState = {
-  rows: {},
-  count: 0,
+  rows: {} as CloudAR.Resource.ResourceStructure<CloudAR.Resource.ResourceKey>,
+  count: 0 as number,
 };
 
 type Payload<K> = {
@@ -14,17 +13,19 @@ type Payload<K> = {
   data: K;
 };
 
-type Payloads<T extends ResourceKey> = ResourceStructure<T>;
+type Payloads<T extends CloudAR.Resource.ResourceKey> = CloudAR.Resource.ResourceStructure<T>;
 
-type Action<T extends ResourceKey, K extends ResourceMap[T]> = {
-  type: string;
-  data: Payload<K> | Payloads<T> | number;
-};
+type ActionPayload<
+  T extends CloudAR.Resource.ResourceKey,
+  K extends CloudAR.Resource.ResourceMap[T]
+> = Payload<K> | Payloads<T> | number;
 
 const reducer =
-  <T extends ResourceKey, K extends ResourceMap[T]>(resourceName: T) =>
-  (state: ResourceStructure<T> = defaultState, action: Action<T, K>) => {
-    let temp: ResourceStructure<T> = defaultState;
+  <T extends CloudAR.Resource.ResourceKey, K extends CloudAR.Resource.ResourceMap[T]>(
+    resourceName: T
+  ) =>
+  (state: Payloads<T> = defaultState, action: CloudAR.Store.Action<ActionPayload<T, K>>) => {
+    let temp: Payloads<T> = defaultState;
 
     switch (action.type) {
       case `resources.${resourceName}.set`:
@@ -66,10 +67,14 @@ const reducer =
         if (!hasOwnProperty(action.data, 'rows') || _.isNumber(action.data)) return state;
 
         const data1 = _.isArray(action.data.rows) ? action.data.rows : [action.data.rows];
+        let count = state.count;
+
+        if (hasOwnProperty(action.data, 'count') && _.isNumber(action.data.count))
+          count = +action.data.count;
 
         return {
           rows: _.keyBy(data1, 'id'),
-          count: action.data.count,
+          count,
         };
 
       default:
@@ -77,11 +82,13 @@ const reducer =
     }
   };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const allReducer: Record<ResourceKey, any> = {} as any;
+const allReducer = _.reduce(
+  RESOURCE_NAME,
+  (prev, curr) => ({
+    ...prev,
+    [curr]: reducer(curr),
+  }),
+  {} as Record<CloudAR.Resource.ResourceKey, ReturnType<typeof reducer>>
+);
 
-_.forEach(RESOURCE_NAME, (resName: ResourceKey) => {
-  allReducer[resName] = reducer(resName);
-});
-
-export default combineReducers<Resources>(allReducer);
+export default combineReducers<CloudAR.Resource.Resources>(allReducer);

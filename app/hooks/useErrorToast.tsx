@@ -9,7 +9,15 @@ const useErrorToast = () => {
     position: 'top',
   });
 
-  return (err: any) => {
+  return (error: unknown) => {
+    const err = error as {
+      response?: {
+        data?: {
+          message?: string;
+        };
+      };
+    };
+
     toast({
       description: err?.response?.data?.message ?? 'Something went wrong',
     });

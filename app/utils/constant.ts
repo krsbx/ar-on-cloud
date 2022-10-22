@@ -1,7 +1,7 @@
 export const USER_ROLE = {
   ADMIN: 'ADMIN',
   USER: 'USER',
-};
+} as const;
 
 export const RESOURCE_NAME = {
   PROFILES: 'profiles',
@@ -13,4 +13,4 @@ export const RESOURCE_NAME = {
 export const COOKIE_KEY = {
   TOKEN: 'token',
   USER_ID: 'userId',
-};
+} as const;

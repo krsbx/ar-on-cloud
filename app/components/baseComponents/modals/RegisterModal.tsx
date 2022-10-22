@@ -5,13 +5,11 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { userRegister as _userRegister } from 'store/actions/currentUser';
 import { registerSchema } from 'utils/formSchema';
-import { ReactSetter } from 'utils/interfaces/global';
-import { UserRegisterPayload } from 'utils/interfaces/payloadsReponses';
 
-const RegisterModal = ({ userRegister, setIsLogin }: Props) => {
+const RegisterModal: ReactFC<Props> = ({ userRegister, setIsLogin }) => {
   const toast = useErrorToast();
 
-  const onSubmit = async (values: UserRegisterPayload) => {
+  const onSubmit = async (values: CloudAR.Payload.User['Register']) => {
     try {
       await userRegister(values);
       setIsLogin(true);

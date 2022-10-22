@@ -6,12 +6,11 @@ import React, { createRef, useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { getUserById as _getUserById } from 'store/actions/users';
 import { getUserId } from 'utils/cookieUtils';
-import { User } from 'utils/interfaces/resource';
 import PinnedAR from './PinnedAR';
 
-const DashboardPage = ({ getUserById }: Props) => {
+const DashboardPage: ReactFC<Props> = ({ getUserById }) => {
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<CloudAR.Resource.User | null>(null);
   const contentRef = createRef<HTMLDivElement>();
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { COOKIE_KEY } from '../constant';
+import { COOKIE_KEY } from 'utils/constant';
 
-const useIsAuthenticated = (): boolean => {
+const useIsAuthenticated = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [{ token }] = useCookies([COOKIE_KEY.TOKEN]);
 

@@ -1,3 +1,1 @@
-import { AppState } from '..';
-
-export const getCurrentUser = (state: AppState) => state.currentUser;
+export const getCurrentUser = (state: CloudAR.Store.AppState) => state.currentUser;

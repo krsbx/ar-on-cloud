@@ -15,13 +15,12 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { userLogin as _userLogin } from 'store/actions/currentUser';
 import { loginSchema } from 'utils/formSchema';
-import { UserLoginPayload } from 'utils/interfaces/payloadsReponses';
 
-const LoginModal = ({ userLogin, onClose }: Props) => {
+const LoginModal: ReactFC<Props> = ({ userLogin, onClose }) => {
   const router = useRouter();
   const toast = useErrorToast();
 
-  const onSubmit = async (values: UserLoginPayload) => {
+  const onSubmit = async (values: CloudAR.Payload.User['Login']) => {
     try {
       await userLogin(values);
       onClose();

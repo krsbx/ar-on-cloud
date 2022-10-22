@@ -9,8 +9,9 @@ export const isAuthenticated = () => {
 
   const { exp }: JwtPayload = jwtDecode(token);
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return exp! * 1000 < Date.now();
+  if (!exp) return false;
+
+  return exp * 1000 < Date.now();
 };
 
 export const setToken = (token: string) => {

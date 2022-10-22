@@ -1,12 +1,13 @@
 import React from 'react';
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  type ReactFC<Props extends object = {}> = React.FC<
+  type ReactFC<Props extends object = object> = React.FC<
     Props & {
       children?: React.ReactNode;
     }
   >;
 
   type ReactRef<T> = React.RefObject<T> | React.MutableRefObject<T>;
+
+  type ReactSetter<T> = React.Dispatch<React.SetStateAction<T>>;
 }

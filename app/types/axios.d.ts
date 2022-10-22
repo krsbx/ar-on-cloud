@@ -1,13 +1,12 @@
-import {
+import type {
   AxiosRequestConfig as OriginalAxiosRequestConfig,
   AxiosRequestHeaders as OriginalAxiosRequestHeaders,
 } from 'axios';
-import { ResourceKey } from 'utils/interfaces/resource';
 
 declare module 'axios' {
   interface AxiosRequestHeaders extends OriginalAxiosRequestHeaders {
     Authorization: string;
-    resourceName: ResourceKey;
+    resourceName: CloudAR.Resource.ResourceKey;
     overwrite: boolean;
   }
 
@@ -19,7 +18,7 @@ declare module 'axios' {
 
   interface AxiosRequestConfig extends OriginalAxiosRequestConfig {
     headers?: AxiosRequestHeaders;
-    resourceName?: ResourceKey;
+    resourceName?: CloudAR.Resource.ResourceKey;
     overwrite?: boolean;
   }
 }

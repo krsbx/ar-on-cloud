@@ -1,16 +1,13 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { type AxiosInstance } from 'axios';
 import _ from 'lodash';
 import { getToken } from 'utils/cookieUtils';
-import { ResourceKey } from 'utils/interfaces/resource';
-import { AppDispatch, AppState } from '.';
 import { overwriteResource, setResource, updateResource } from './actions/resources';
 
 const instance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const applyInterceptors = (dispatch: AppDispatch, getState: () => AppState) => {
+export const applyInterceptors = (dispatch: CloudAR.Store.AppDispatch) => {
   instance.interceptors.request.use(
     (config) => {
       const token = getToken();
@@ -19,7 +16,7 @@ export const applyInterceptors = (dispatch: AppDispatch, getState: () => AppStat
         config.headers.Authorization = token ? `Bearer ${token}` : '';
 
         if (_.isString(config.headers.resourceName))
-          config.resourceName = <ResourceKey>config.headers.resourceName;
+          config.resourceName = <CloudAR.Resource.ResourceKey>config.headers.resourceName;
 
         if (_.isBoolean(config.headers.overwrite)) config.overwrite = config.headers.overwrite;
       }

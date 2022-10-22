@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import useSmoothScrollbar from 'hooks/useSmoothSrollbar';
 import useTopBarHeight from 'hooks/useTopbarHeight';
 import React, { createRef } from 'react';
-import { useIsAuthenticated } from 'utils/sessionUtils';
+import useIsAuthenticated from 'hooks/useIsAuthenticated';
 import { TopBar } from '../baseComponents';
 import { UserTopBar } from '../baseComponents/TopBarChildren';
 
