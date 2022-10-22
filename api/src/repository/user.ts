@@ -1,66 +1,55 @@
-import _ from 'lodash';
 import { Prisma } from '@prisma/client';
+import _ from 'lodash';
 import { hashText } from '../utils/encryption';
-import factory from './baseRepository';
+import BaseRepository from './baseRepository';
 import { AnyRecord, ModelStructure, MODELS_NAME } from './models';
 
-const userRepository = factory(MODELS_NAME.USER);
+class User extends BaseRepository(MODELS_NAME.USER) {
+  public static async resourceToModel(resource: AnyRecord) {
+    const user = _.pick(resource, ['email', 'username', 'password']);
 
-const resourceToModel = async (resource: AnyRecord) => {
-  const user = _.pick(resource, ['email', 'username', 'password']);
+    if (resource.password) user.password = await hashText(resource.password);
 
-  if (resource.password) user.password = await hashText(resource.password);
+    return user as Prisma.UserCreateInput;
+  }
 
-  return user as Prisma.UserCreateInput;
-};
+  public static async modelToResource(user: ModelStructure['user']) {
+    return _.omit(user, ['password', 'updatedAt']);
+  }
 
-const modelToResource = async (user: ModelStructure['user']) => {
-  return _.omit(user, ['password', 'updatedAt']);
-};
+  public static async getProfile(id: Prisma.UserWhereInput | string | number) {
+    return this.findOne(id, {
+      include: {
+        profile: true,
+      },
+    });
+  }
 
-const getProfile = async (id: Prisma.UserWhereInput | string | number) => {
-  const user = await userRepository.findOne(id, {
-    include: {
-      profile: true,
-    },
-  });
+  public static async checkEmailUsername(
+    email: string,
+    username: string,
+    id: string | number | null = null
+  ) {
+    const checkEmail = await this.findOne({
+      email,
+    });
 
-  return user;
-};
+    if (checkEmail && (id ? checkEmail.id === id : true))
+      return {
+        message: 'Email already in use',
+      };
 
-const checkEmailUsername = async (
-  email: string,
-  username: string,
-  id: string | number | null = null
-) => {
-  const checkEmail = await userRepository.findOne({
-    email,
-  });
+    const checkUsername = await this.findOne({
+      username,
+    });
 
-  if (checkEmail && (id ? checkEmail.id !== id : true))
-    return {
-      message: 'Email already in use',
-    };
+    if (checkUsername && (id ? checkUsername.id === id : true))
+      return {
+        message: 'Username already in use',
+      };
 
-  const checkUsername = await userRepository.findOne({
-    username,
-  });
+    return null;
+  }
+}
 
-  if (checkUsername && (id ? checkUsername.id !== id : true))
-    return {
-      message: 'Username already in use',
-    };
-
-  return null;
-};
-
-const extendsUserRepository = {
-  getProfile,
-  checkEmailUsername,
-  modelToResource,
-  resourceToModel,
-};
-
-const repository = _.merge(userRepository, extendsUserRepository);
-
-export default repository;
+export default User;

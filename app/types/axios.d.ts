@@ -1,8 +1,8 @@
 import {
-  AxiosRequestHeaders as OriginalAxiosRequestHeaders,
   AxiosRequestConfig as OriginalAxiosRequestConfig,
+  AxiosRequestHeaders as OriginalAxiosRequestHeaders,
 } from 'axios';
-import { ResourceKey } from 'src/utils/interfaces/resource';
+import { ResourceKey } from 'utils/interfaces/resource';
 
 declare module 'axios' {
   interface AxiosRequestHeaders extends OriginalAxiosRequestHeaders {

@@ -1,5 +1,5 @@
-import _ from 'lodash';
 import asyncMw from 'express-asyncmw';
+import _ from 'lodash';
 import repository from '../repository';
 
 export const createPostMw = asyncMw(async (req, res, next) => {
@@ -37,11 +37,13 @@ export const getPostsMw = asyncMw(async (req, res, next) => {
     },
     req.filterQueryParams,
     req.query,
-    !_.isEmpty(req.users)
-      ? {
-          user: true,
-        }
-      : {}
+    {
+      include: !_.isEmpty(req.users)
+        ? {
+            user: true,
+          }
+        : {},
+    }
   );
 
   return next();

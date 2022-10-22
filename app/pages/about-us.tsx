@@ -1,7 +1,7 @@
-import React from 'react';
-import Head from 'next/head';
+import { AboutUsPage } from 'components/pageComponents';
 import type { NextPage } from 'next';
-import { AboutUsPage } from 'src/components/pageComponents';
+import Head from 'next/head';
+import React from 'react';
 
 const AboutUs: NextPage = () => {
   return (

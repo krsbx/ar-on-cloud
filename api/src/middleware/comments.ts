@@ -1,5 +1,5 @@
-import _ from 'lodash';
 import asyncMw from 'express-asyncmw';
+import _ from 'lodash';
 import repository from '../repository';
 
 export const createCommentMw = asyncMw(async (req, res, next) => {
@@ -42,7 +42,9 @@ export const getCommentsMw = asyncMw(async (req, res, next) => {
     req.filterQueryParams,
     req.query,
     {
-      user: true,
+      include: {
+        user: true,
+      },
     }
   );
 

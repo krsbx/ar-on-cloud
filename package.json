@@ -15,7 +15,10 @@
     "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^16.2.1",
     "concurrently": "^7.1.0",
-    "husky": "^7.0.4"
+    "eslint": "^8.12.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.6.1"
   },
   "keywords": [],
   "author": "",
@@ -23,5 +26,11 @@
   "bugs": {
     "url": "https://github.com/krsbx/my-website/issues"
   },
-  "homepage": "https://github.com/krsbx/my-website#readme"
+  "homepage": "https://github.com/krsbx/my-website#readme",
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  }
 }

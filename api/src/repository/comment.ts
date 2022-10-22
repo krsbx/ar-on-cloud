@@ -1,24 +1,17 @@
 import _ from 'lodash';
+import BaseRepository from './baseRepository';
 import { AnyRecord, ModelStructure, MODELS_NAME } from './models';
-import factory from './baseRepository';
 
-const commentRepository = factory(MODELS_NAME.COMMENT);
+class Comment extends BaseRepository(MODELS_NAME.COMMENT) {
+  public static async resourceToModel(resource: AnyRecord) {
+    const comment = _.pick(resource, ['content', 'userId', 'postId']);
 
-const resourceToModel = async (resource: AnyRecord) => {
-  const comment = _.pick(resource, ['content', 'userId', 'postId']);
+    return comment;
+  }
 
-  return comment;
-};
+  public static async modelToResource(model: ModelStructure['comment']) {
+    return model;
+  }
+}
 
-const modelToResource = async (model: ModelStructure['comment']) => {
-  return model;
-};
-
-const extendCommentRepository = {
-  resourceToModel,
-  modelToResource,
-};
-
-const repository = _.assign(commentRepository, extendCommentRepository);
-
-export default repository;
+export default Comment;

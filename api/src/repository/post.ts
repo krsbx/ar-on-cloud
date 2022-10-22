@@ -1,24 +1,17 @@
 import _ from 'lodash';
+import BaseRepository from './baseRepository';
 import { AnyRecord, ModelStructure, MODELS_NAME } from './models';
-import factory from './baseRepository';
 
-const postRepository = factory(MODELS_NAME.POST);
+class Post extends BaseRepository(MODELS_NAME.POST) {
+  public static async resourceToModel(resource: AnyRecord) {
+    const post = _.pick(resource, ['title', 'content', 'userId']);
 
-const resourceToModel = async (resource: AnyRecord) => {
-  const post = _.pick(resource, ['title', 'content', 'userId']);
+    return post;
+  }
 
-  return post;
-};
+  public static async modelToResource(model: ModelStructure['post']) {
+    return model;
+  }
+}
 
-const modelToResource = async (model: ModelStructure['post']) => {
-  return model;
-};
-
-const extendPostRepository = {
-  resourceToModel,
-  modelToResource,
-};
-
-const repository = _.assign(postRepository, extendPostRepository);
-
-export default repository;
+export default Post;

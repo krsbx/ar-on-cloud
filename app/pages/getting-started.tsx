@@ -1,7 +1,7 @@
-import React from 'react';
-import Head from 'next/head';
+import GettingStartedPage from 'components/pageComponents/GettingStartedPage';
 import type { NextPage } from 'next';
-import GettingStartedPage from 'src/components/pageComponents/GettingStartedPage';
+import Head from 'next/head';
+import React from 'react';
 
 const AboutMe: NextPage = () => {
   return (

@@ -1,7 +1,7 @@
-import React from 'react';
-import Head from 'next/head';
+import DashboardPage from 'components/pageComponents/dashboardPage/DashboardPage';
 import type { NextPage } from 'next';
-import DashboardPage from 'src/components/pageComponents/dashboardPage/DashboardPage';
+import Head from 'next/head';
+import React from 'react';
 
 const UserDashboard: NextPage = () => {
   return (
