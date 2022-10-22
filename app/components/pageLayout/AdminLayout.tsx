@@ -11,7 +11,14 @@ const AdminLayout: React.FC<Props> = ({ children, contentRef }) => {
   useSmoothScrollbar(contentRef);
 
   return (
-    <Flex flexDirection={'column'} bg="gray.100" width={'100vw'} height={'100vh'}>
+    <Flex
+      flexDirection={'column'}
+      bg="gray.100"
+      width={'100vw'}
+      height={'100vh'}
+      position={'relative'}
+      overflow={'hidden'}
+    >
       <TopBar ref={topbarRef} />
       <Flex
         flexDirection={'column'}

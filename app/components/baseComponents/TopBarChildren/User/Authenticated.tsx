@@ -1,11 +1,7 @@
 import React from 'react';
 
-const Authenticated: React.FC<Props> = ({ isTransparent = false }) => {
+const Authenticated: ReactFC = ({}) => {
   return <div>Authenticated</div>;
-};
-
-type Props = {
-  isTransparent?: boolean;
 };
 
 export default Authenticated;

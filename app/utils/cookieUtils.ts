@@ -1,6 +1,6 @@
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import Cookies from 'js-cookie';
-import { COOKIE_KEY } from './constant';
+import { COOKIE_KEY } from './constant/global';
 
 export const isAuthenticated = () => {
   const token = Cookies.get(COOKIE_KEY.TOKEN);

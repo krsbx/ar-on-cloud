@@ -1,4 +1,4 @@
-import { RESOURCE_NAME, USER_ROLE } from 'utils/constant';
+import { RESOURCE_NAME, USER_ROLE } from 'utils/constant/global';
 
 export type UserRole = typeof USER_ROLE[keyof typeof USER_ROLE];
 

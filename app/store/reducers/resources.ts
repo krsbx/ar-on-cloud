@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { hasOwnProperty } from 'utils/common';
-import { RESOURCE_NAME } from 'utils/constant';
+import { RESOURCE_NAME } from 'utils/constant/global';
 
 const defaultState = {
   rows: {} as CloudAR.Resource.ResourceStructure<CloudAR.Resource.ResourceKey>,

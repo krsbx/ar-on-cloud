@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import NextLink from 'next/link';
 import {
-  HStack,
+  Stack,
   Link,
   LinkProps,
   Modal,
@@ -13,29 +13,32 @@ import {
   Text,
   useDisclosure,
   TextProps,
+  useBreakpoint,
 } from '@chakra-ui/react';
 import LoginModal from '../../modals/LoginModal';
 import RegisterModal from '../../modals/RegisterModal';
 
-const Anonymous: React.FC<Props> = ({ isTransparent = false }) => {
+const Anonymous: ReactFC = ({}) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const breakpoint = useBreakpoint('md');
+  const isBase = useMemo(() => ['base', 'sm'].includes(breakpoint ?? 'md'), [breakpoint]);
 
   const linkStyle: LinkProps = {
-    bg: isTransparent ? 'transparent' : 'blackAlpha.100',
-    color: isTransparent ? 'white' : 'blackAlpha.600',
-    fontWeight: isTransparent ? 'bold' : 'semibold',
+    bg: isBase ? 'blackAlpha.400' : 'blackAlpha.100',
+    color: isBase ? 'white' : 'blackAlpha.600',
+    fontWeight: isBase ? 'bold' : 'semibold',
     rounded: 'md',
     py: 2,
     px: 5,
     transition: 'all 0.3s ease-in-out',
+    textAlign: 'center',
     _hover: {
-      bg: isTransparent ? 'blackAlpha.100' : 'blackAlpha.300',
-      color: 'black',
+      bg: isBase ? 'blackAlpha.100' : 'blackAlpha.300',
     },
   };
 
-  const modalHeaderStyle = (inLogin: boolean): TextProps =>
+  const modalHeaderStyle = (inLogin: boolean) =>
     ({
       fontWeight: inLogin ? '700' : '500',
       fontSize: inLogin ? '0.9rem' : '0.8rem',
@@ -44,7 +47,7 @@ const Anonymous: React.FC<Props> = ({ isTransparent = false }) => {
 
   return (
     <React.Fragment>
-      <HStack spacing={3}>
+      <Stack spacing={3} direction={isBase ? 'column' : 'row'}>
         <NextLink href={'#register'} passHref>
           <Link
             {...linkStyle}
@@ -67,16 +70,17 @@ const Anonymous: React.FC<Props> = ({ isTransparent = false }) => {
             Login
           </Link>
         </NextLink>
-      </HStack>
+      </Stack>
       <Modal isOpen={isOpen} onClose={onClose} closeOnEsc isCentered>
         <ModalOverlay />
         <ModalContent p={3}>
           <ModalHeader>
-            <HStack
+            <Stack
               alignItems={'center'}
               spacing={3}
               justifyContent={'center'}
               textTransform={'uppercase'}
+              direction={'row'}
             >
               <NextLink href={'#register'} passHref>
                 <Link
@@ -113,7 +117,7 @@ const Anonymous: React.FC<Props> = ({ isTransparent = false }) => {
                   <Text {...modalHeaderStyle(isLogin)}>Login</Text>
                 </Link>
               </NextLink>
-            </HStack>
+            </Stack>
             <ModalCloseButton />
           </ModalHeader>
           <ModalBody>
@@ -123,10 +127,6 @@ const Anonymous: React.FC<Props> = ({ isTransparent = false }) => {
       </Modal>
     </React.Fragment>
   );
-};
-
-type Props = {
-  isTransparent?: boolean;
 };
 
 export default Anonymous;

@@ -1,11 +1,12 @@
-import React from 'react';
+import { useState } from 'react';
+import useHeightObserver from './useHeightObserver';
 
 const useTopBarHeight = (topbarRef: ReactRef<HTMLDivElement>) => {
-  const [topbarHeight, setTopbarHeight] = React.useState<number>(48);
+  const [topbarHeight, setTopbarHeight] = useState(48);
 
-  React.useEffect(() => {
-    if (topbarRef.current) setTopbarHeight(topbarRef.current.clientHeight);
-  }, []); // eslint-disable-line
+  useHeightObserver(topbarRef, (height) => {
+    setTopbarHeight(height);
+  });
 
   return topbarHeight;
 };

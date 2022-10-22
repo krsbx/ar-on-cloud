@@ -1,4 +1,4 @@
-import { RESOURCE_NAME } from 'utils/constant';
+import { RESOURCE_NAME } from 'utils/constant/global';
 import { getAllData, getDataById } from './resources';
 
 export const getAllUser =

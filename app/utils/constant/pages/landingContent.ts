@@ -1,24 +1,24 @@
-import { ImageProps } from '@chakra-ui/react';
+import type { ImageProps } from '@chakra-ui/react';
 
-interface ITextSide {
+type TextSide = {
   title: string;
   description: string[];
-}
+};
 
-interface IImageSide extends ImageProps {
+type ImageSide = ImageProps & {
   title?: string;
-}
+};
 
-export interface ISection1 {
-  textSide: ITextSide;
-  imageSide: IImageSide;
-}
+type Section1 = {
+  textSide: TextSide;
+  imageSide: ImageSide;
+};
 
-export interface ISection2 extends ITextSide {
+type Section2 = TextSide & {
   imagePath: string;
-}
+};
 
-export const SECTION1: ISection1[] = [
+export const SECTION1: Section1[] = [
   {
     textSide: {
       title: 'Welcome to Augmented Reality on Web!',
@@ -58,7 +58,7 @@ export const SECTION1: ISection1[] = [
   },
 ];
 
-export const SECTION2: ISection2[] = [
+export const SECTION2: Section2[] = [
   {
     title: 'Upload and Done!',
     description: [
