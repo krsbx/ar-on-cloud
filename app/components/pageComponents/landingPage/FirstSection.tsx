@@ -9,8 +9,18 @@ const FirstSection = () => {
       width={{ base: '90%', md: '2xl', lg: '3xl' }}
       alignItems={'center'}
       flexDirection={'column'}
-      my={5}
+      py={10}
     >
+      <Text
+        textTransform={'uppercase'}
+        fontWeight={'bold'}
+        id={'learn-more'}
+        fontSize={'26px'}
+        mb={'10px'}
+      >
+        Augmented Reality on Web
+      </Text>
+      <Divider mb={10} borderColor={'gray.400'} width={'60%'} />
       <Grid templateColumns={'1fr'} gap={3}>
         {_.map(SECTION1, ({ textSide, imageSide }, index) => (
           <GridItem
@@ -45,7 +55,6 @@ const FirstSection = () => {
           </GridItem>
         ))}
       </Grid>
-      <Divider py={3} borderColor={'gray.400'} width={'50%'} />
     </Flex>
   );
 };

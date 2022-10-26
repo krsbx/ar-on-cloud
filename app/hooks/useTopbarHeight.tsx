@@ -2,13 +2,13 @@ import { useState } from 'react';
 import useHeightObserver from './useHeightObserver';
 
 const useTopBarHeight = (topbarRef: ReactRef<HTMLDivElement>) => {
-  const [topbarHeight, setTopbarHeight] = useState(48);
+  const [topBarHeight, setTopBarHeight] = useState(48);
 
   useHeightObserver(topbarRef, (height) => {
-    setTopbarHeight(height);
+    setTopBarHeight(height);
   });
 
-  return topbarHeight;
+  return topBarHeight;
 };
 
 export default useTopBarHeight;

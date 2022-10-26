@@ -1,9 +1,11 @@
 import { Flex, Link, Text } from '@chakra-ui/react';
+import { Footer } from 'components/general';
 import FirstSection from 'components/pageComponents/landingPage/FirstSection';
 import SecondSection from 'components/pageComponents/landingPage/SecondSection';
 import { UserLayout } from 'components/pageLayout';
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import NextLink from 'next/link';
 import React, { createRef } from 'react';
 
 const Home: NextPage = () => {
@@ -44,18 +46,19 @@ const Home: NextPage = () => {
             >
               Use Augmented Reality on Website now!
             </Text>
-            <Link
-              href={'/getting-started'}
-              bg={'gray.200'}
-              transition={'all 0.3s ease-in-out'}
-              borderRadius={'md'}
-              p={3}
-              _hover={{
-                bg: 'gray.300',
-              }}
-            >
-              Getting Started!
-            </Link>
+            <NextLink href={'#learn-more'} passHref>
+              <Link
+                bg={'gray.200'}
+                transition={'all 0.3s ease-in-out'}
+                borderRadius={'md'}
+                p={3}
+                _hover={{
+                  bg: 'gray.300',
+                }}
+              >
+                Learn More!
+              </Link>
+            </NextLink>
           </Flex>
           <FirstSection />
           <SecondSection />
@@ -63,7 +66,8 @@ const Home: NextPage = () => {
             width={{ base: '90%', md: '2xl', lg: '3xl' }}
             alignItems={'center'}
             flexDirection={'column'}
-            my={4}
+            mt={5}
+            mb={2}
           >
             <Text fontStyle={'italic'} fontSize={16}>
               What are you waiting for?
@@ -71,35 +75,25 @@ const Home: NextPage = () => {
             <Text fontStyle={'italic'} fontSize={16}>
               Come and join us and make AR with us!
             </Text>
-            <Flex py={3}>
-              <Link
-                href={'/getting-started'}
-                bg={'whiteAlpha.600'}
-                borderRadius={'md'}
-                boxShadow={'lg'}
-                transition={'all 0.3s ease-in-out'}
-                p={3}
-                px={4}
-                _hover={{
-                  bg: 'whiteAlpha.900',
-                }}
-              >
-                Create AR Now!
-              </Link>
+            <Flex my={5}>
+              <NextLink href={'/getting-started'} passHref>
+                <Link
+                  bg={'whiteAlpha.600'}
+                  borderRadius={'md'}
+                  boxShadow={'lg'}
+                  transition={'all 0.3s ease-in-out'}
+                  p={3}
+                  px={4}
+                  _hover={{
+                    bg: 'whiteAlpha.900',
+                  }}
+                >
+                  Create AR Now!
+                </Link>
+              </NextLink>
             </Flex>
           </Flex>
-          <Flex
-            justifyContent={'center'}
-            alignItems={'center'}
-            fontWeight={'bold'}
-            fontSize={'12px'}
-          >
-            <Text as={'span'}>Made with&nbsp;</Text>
-            <Text as={'span'} color={'red.600'}>
-              ❤
-            </Text>
-            <Text as={'span'}>&nbsp;since 2021</Text>
-          </Flex>
+          <Footer />
         </Flex>
       </UserLayout>
     </React.Fragment>
