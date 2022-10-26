@@ -11,8 +11,17 @@ const SecondSection = () => {
       flexDirection={'column'}
       my={3}
     >
-      <Text fontWeight={'bold'}>But, why use AR on Web?</Text>
-      <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={5} py={4}>
+      <Text
+        textTransform={'uppercase'}
+        fontWeight={'bold'}
+        id={'why-on-web'}
+        fontSize={'26px'}
+        mb={'10px'}
+      >
+        why on Web?
+      </Text>
+      <Divider mb={10} borderColor={'gray.400'} width={'60%'} />
+      <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={5}>
         {_.map(SECTION2, ({ imagePath, description, title }, index) => (
           <GridItem
             transition="all 0.3s ease-in-out"
@@ -46,7 +55,6 @@ const SecondSection = () => {
           </GridItem>
         ))}
       </Grid>
-      <Divider borderColor={'gray.400'} width={'50%'} />
     </Flex>
   );
 };

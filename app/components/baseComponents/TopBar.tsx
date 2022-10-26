@@ -9,11 +9,10 @@ import {
   useBreakpointValue,
   useMergeRefs,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import useTopBarHeight from 'hooks/useTopbarHeight';
-import { GiHamburgerMenu } from 'react-icons/gi';
+import NextLink from 'next/link';
 import React, { createRef, useEffect, useMemo, useState } from 'react';
-import { chakraSpace } from 'utils/customTheme';
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 const TopBar = React.forwardRef<HTMLDivElement, Props>(({ children }, ref) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,7 +39,7 @@ const TopBar = React.forwardRef<HTMLDivElement, Props>(({ children }, ref) => {
   }, [isBase]);
 
   return (
-    <>
+    <React.Fragment>
       <Grid
         width={'100vw'}
         alignItems={'center'}
@@ -98,17 +97,17 @@ const TopBar = React.forwardRef<HTMLDivElement, Props>(({ children }, ref) => {
       <Box
         position={'absolute'}
         width={'100vw'}
-        height={`calc(100vh - calc(${topBarHeight}px) + ${chakraSpace(4)})`}
+        height={`calc(100vh - ${topBarHeight}px)`}
         right={isMenuOpen ? 0 : `-100vw`}
         bg={'blackAlpha.500'}
-        top={`calc(${topBarHeight}px + ${chakraSpace(4)})`}
+        top={`${topBarHeight}px`}
         transition={'all 0.2s ease-in-out'}
         padding={2}
         zIndex={2}
       >
         {children}
       </Box>
-    </>
+    </React.Fragment>
   );
 });
 

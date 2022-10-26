@@ -1,8 +1,8 @@
 import { Flex } from '@chakra-ui/react';
+import useIsAuthenticated from 'hooks/useIsAuthenticated';
 import useSmoothScrollbar from 'hooks/useSmoothSrollbar';
 import useTopBarHeight from 'hooks/useTopbarHeight';
 import React, { createRef } from 'react';
-import useIsAuthenticated from 'hooks/useIsAuthenticated';
 import { TopBar } from '../baseComponents';
 import { UserTopBar } from '../baseComponents/TopBarChildren';
 
@@ -40,7 +40,7 @@ const UserLayout: React.FC<Props> = ({ children, contentRef }) => {
 };
 
 type Props = {
-  contentRef?: ReactRef<HTMLDivElement>;
+  contentRef: ReactRef<HTMLDivElement>;
 };
 
 export default UserLayout;
