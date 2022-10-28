@@ -1,12 +1,16 @@
 import { Flex } from '@chakra-ui/react';
+import useIsAuthenticated from 'hooks/useIsAuthenticated';
 import useSmoothScrollbar from 'hooks/useSmoothSrollbar';
 import useTopBarHeight from 'hooks/useTopbarHeight';
 import React, { createRef } from 'react';
-import { TopBar } from '../baseComponents';
+import { TopBar } from './baseComponents';
+import { UserTopBar } from './baseComponents/TopBarChildren';
 
-const AdminLayout: ReactFC<Props> = ({ children, contentRef }) => {
+const MainLayout: ReactFC<Props> = ({ children }) => {
   const topbarRef = createRef<HTMLDivElement>();
+  const contentRef = createRef<HTMLDivElement>();
   const topBarHeight = useTopBarHeight(topbarRef);
+  const isAuth = useIsAuthenticated();
 
   useSmoothScrollbar(contentRef);
 
@@ -19,13 +23,16 @@ const AdminLayout: ReactFC<Props> = ({ children, contentRef }) => {
       position={'relative'}
       overflow={'hidden'}
     >
-      <TopBar ref={topbarRef} />
+      <TopBar ref={topbarRef}>
+        {isAuth ? <UserTopBar.Anonymous /> : <UserTopBar.Anonymous />}
+      </TopBar>
       <Flex
         flexDirection={'column'}
         width={'100vw'}
         height={`calc(100vh - ${topBarHeight}px)`}
         overflow={'auto'}
         ref={contentRef}
+        pb={10}
       >
         {children}
       </Flex>
@@ -34,7 +41,7 @@ const AdminLayout: ReactFC<Props> = ({ children, contentRef }) => {
 };
 
 type Props = {
-  contentRef: ReactRef<HTMLDivElement>;
+  contentRef?: ReactRef<HTMLDivElement>;
 };
 
-export default AdminLayout;
+export default MainLayout;

@@ -6,7 +6,7 @@ import React, { createRef } from 'react';
 import { TopBar } from '../baseComponents';
 import { UserTopBar } from '../baseComponents/TopBarChildren';
 
-const UserLayout: React.FC<Props> = ({ children, contentRef }) => {
+const UserLayout: ReactFC<Props> = ({ children, contentRef }) => {
   const topbarRef = createRef<HTMLDivElement>();
   const topBarHeight = useTopBarHeight(topbarRef);
   const isAuth = useIsAuthenticated();

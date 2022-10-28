@@ -10,7 +10,6 @@ import {
   useMergeRefs,
 } from '@chakra-ui/react';
 import useTopBarHeight from 'hooks/useTopbarHeight';
-import NextLink from 'next/link';
 import React, { createRef, useEffect, useMemo, useState } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 
@@ -53,21 +52,20 @@ const TopBar = React.forwardRef<HTMLDivElement, Props>(({ children }, ref) => {
       >
         <GridItem>
           <HStack spacing={2} justifyContent={'flex-start'}>
-            <NextLink href="/" passHref>
-              <Link
-                transition={'all 0.3s ease-in-out'}
-                color={'blackAlpha.600'}
-                bg={'blackAlpha.100'}
-                rounded={'md'}
-                p={3}
-                _hover={{
-                  bg: 'blackAlpha.300',
-                  color: 'blackAlpha.900',
-                }}
-              >
-                Home
-              </Link>
-            </NextLink>
+            <Link
+              transition={'all 0.3s ease-in-out'}
+              color={'blackAlpha.600'}
+              bg={'blackAlpha.100'}
+              rounded={'md'}
+              p={3}
+              href="/"
+              _hover={{
+                bg: 'blackAlpha.300',
+                color: 'blackAlpha.900',
+              }}
+            >
+              Home
+            </Link>
           </HStack>
         </GridItem>
         <GridItem display={display?.md}>
