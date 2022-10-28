@@ -1,4 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
+import MainLayout from 'components/MainLayout';
 import useUrlHashListener from 'hooks/useUrlHashListener';
 import type { AppProps } from 'next/app';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -14,7 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ReduxProvider store={store}>
       <ChakraProvider theme={customTheme}>
-        <Component {...pageProps} />
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
       </ChakraProvider>
     </ReduxProvider>
   );
