@@ -4,7 +4,13 @@ import repository from 'repository';
 
 export const createUserMw = asyncMw(async (req, res, next) => {
   const exist = await repository.user.checkEmailUsername(req.body.email, req.body.username);
-  if (exist) return res.status(400).json(exist);
+  if (exist) {
+    return res.status(409).json({
+      code: 409,
+      status: httpStatus['409_NAME'],
+      ...exist,
+    });
+  }
 
   if (!req.isAdmin) delete req.body.role;
 
