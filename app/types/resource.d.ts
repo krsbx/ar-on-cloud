@@ -51,11 +51,16 @@ export type ResourceMap = {
   [RESOURCE_NAME.COMMENTS]: Comment;
 };
 
+export type ResourceInfo = {
+  size: number;
+  total: number;
+  totalPages: number;
+  current: number;
+};
+
 export type ResourceStructure<T extends ResourceKey> = {
-  rows: {
-    [id: number]: ResourceMap[T];
-  };
-  count: number;
+  data: Map<string | number, ResourceMap[T]>;
+  page: ResourceInfo;
 };
 
 export type Resources = {
