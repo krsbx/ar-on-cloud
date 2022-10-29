@@ -1,5 +1,5 @@
 import asyncMw from 'express-asyncmw';
-import repository from '../repository';
+import repository from 'repository';
 
 export const createProfileMw = asyncMw(async (req, res, next) => {
   const profile = await repository.profile.findOne({

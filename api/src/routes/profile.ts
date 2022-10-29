@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import * as profile from '../middleware/profile';
+import * as profile from 'middleware/profile';
 
 const router = Router();
 

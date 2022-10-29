@@ -1,9 +1,9 @@
 import asyncMw from 'express-asyncmw';
 import _ from 'lodash';
-import repository from '../repository';
-import { USER_ROLE } from '../utils/constant';
-import { compareText } from '../utils/encryption';
-import { signAccessToken, verifyAccessToken } from '../utils/token';
+import repository from 'repository';
+import { USER_ROLE } from 'utils/constant';
+import { compareText } from 'utils/encryption';
+import { signAccessToken, verifyAccessToken } from 'utils/token';
 
 export const authMw = asyncMw(async (req, res, next) => {
   if (!req.headers.authorization) return res.status(401).json({ message: 'Unauthorized' });
@@ -13,7 +13,7 @@ export const authMw = asyncMw(async (req, res, next) => {
 
   const isVerifiedToken = await verifyAccessToken(bearerToken);
 
-  if (!isVerifiedToken) res.status(400).json({ message: 'Invalid token' });
+  if (!isVerifiedToken) return res.status(400).json({ message: 'Invalid token' });
 
   req.userAuth = await repository.user.findOne(isVerifiedToken.id);
   req.isAdmin = req.userAuth.role === USER_ROLE.ADMIN;
@@ -72,6 +72,7 @@ export const updateUserMw = asyncMw(async (req, res, next) => {
     req.body.username,
     req.user.id
   );
+
   if (exist) return res.status(400).json(exist);
 
   const data = await repository.user.resourceToModel(req.body);

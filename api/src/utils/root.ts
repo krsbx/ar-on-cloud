@@ -1,11 +1,11 @@
-import express, { Express } from 'express';
 import cors from 'cors';
-import authsRoutes from '../routes/auths';
-import usersRoutes from '../routes/users';
-import profilesRoutes from '../routes/profiles';
-import postsRoutes from '../routes/posts';
-import commentsRoutes from '../routes/comments';
-import { queryParserMw } from '../middleware/queryParser';
+import express, { Express } from 'express';
+import { queryParserMw } from 'middleware/queryParser';
+import authsRoutes from 'routes/auths';
+import commentsRoutes from 'routes/comments';
+import postsRoutes from 'routes/posts';
+import profilesRoutes from 'routes/profiles';
+import usersRoutes from 'routes/users';
 
 export default (app: Express) => {
   app.use(express.json());

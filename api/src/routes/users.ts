@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import * as user from '../middleware/users';
-import profileRoute from './profile';
-import postsRoutes from './posts';
+import * as user from 'middleware/users';
 import commentsRoutes from './comments';
+import postsRoutes from './posts';
+import profileRoute from './profile';
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import asyncMw from 'express-asyncmw';
 import _ from 'lodash';
-import repository from '../repository';
+import repository from 'repository';
 
 export const createPostMw = asyncMw(async (req, res, next) => {
   if (!req.body.userId) req.body.userId = req.userAuth.id;

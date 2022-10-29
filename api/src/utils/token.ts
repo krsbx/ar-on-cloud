@@ -1,23 +1,21 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import _ from 'lodash';
 import jwtToken from 'jsonwebtoken';
+import _ from 'lodash';
+import type { UserRole } from 'types/resource';
+
+type TokenPayload = { id: number; role: UserRole };
 
 const jwtSecret = _.get(process.env, 'JWT_SECRET');
 
-export const signAccessToken = (payload: any, always = false) =>
+export const signAccessToken = (payload: TokenPayload, always = false) =>
   jwtToken.sign(payload, jwtSecret!, { ...(!always && { expiresIn: '3h' }) });
 
-// eslint-disable-next-line no-underscore-dangle
-const _verifyAccessToken = (token: string): Promise<any> =>
-  new Promise((resolve) => {
+export const verifyAccessToken = async (token: string) =>
+  new Promise<TokenPayload | false>((resolve) => {
     jwtToken.verify(token, jwtSecret!, (err, decoded) => {
       if (err) resolve(false);
 
-      resolve(decoded);
+      resolve(decoded as TokenPayload | false);
     });
   });
-
-export const verifyAccessToken = async (token: string) => _verifyAccessToken(token);
 
 export default { signAccessToken, verifyAccessToken };
