@@ -51,8 +51,10 @@
     "dotenv-expand": "^8.0.3",
     "express": "^4.17.3",
     "express-asyncmw": "^0.1.0",
+    "http-status": "^1.5.3",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "zod": "^3.19.1"
   }
 }
