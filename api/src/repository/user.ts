@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import _ from 'lodash';
-import { hashText } from '../utils/encryption';
+import { hashText } from 'utils/encryption';
 import BaseRepository from './baseRepository';
 import { AnyRecord, ModelStructure, MODELS_NAME } from './models';
 

@@ -1,6 +1,6 @@
 import asyncMw from 'express-asyncmw';
 import _ from 'lodash';
-import repository from '../repository';
+import repository from 'repository';
 
 export const createCommentMw = asyncMw(async (req, res, next) => {
   // If post id is not provided and there is no post, return 400
