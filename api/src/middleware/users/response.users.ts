@@ -4,7 +4,7 @@ import repository from 'repository';
 import { createGetResponse, createGetsResponse } from 'utils/responses';
 
 export const returnUserMw = asyncMw(async (req, res) => {
-  const response = createGetResponse(req, await repository.profile.modelToResource(req.profile));
+  const response = createGetResponse(req, await repository.user.modelToResource(req.user));
 
   return res.status(req.statusCode ?? 200).json(response);
 });

@@ -30,23 +30,27 @@ class User extends BaseRepository(MODELS_NAME.USER) {
     username: string,
     id: string | number | null = null
   ) {
-    const checkEmail = await this.findOne({
-      email,
-    });
+    if (!_.isEmpty(email)) {
+      const checkEmail = await this.findOne({
+        email,
+      });
 
-    if (checkEmail && (id ? checkEmail.id === id : true))
-      return {
-        message: 'Email already in use',
-      };
+      if (checkEmail && (!_.isNil(id) ? checkEmail.id !== id : true))
+        return {
+          message: 'Email already in use',
+        };
+    }
 
-    const checkUsername = await this.findOne({
-      username,
-    });
+    if (!_.isEmpty(username)) {
+      const checkUsername = await this.findOne({
+        username,
+      });
 
-    if (checkUsername && (id ? checkUsername.id === id : true))
-      return {
-        message: 'Username already in use',
-      };
+      if (checkUsername && (!_.isNil(id) ? checkUsername.id !== id : true))
+        return {
+          message: 'Username already in use',
+        };
+    }
 
     return null;
   }
