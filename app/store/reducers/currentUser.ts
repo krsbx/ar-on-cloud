@@ -1,22 +1,21 @@
-export const CURRENT_USER_ACTION = {
-  SET: 'current-user.set',
-  DELETE: 'current-user.delete',
-} as const;
-
-type CurrentUserType = typeof CURRENT_USER_ACTION[keyof typeof CURRENT_USER_ACTION];
+import {
+  CurrentUserActionType as ActionType,
+  DeleteCurrentUser,
+  SetCurrentUser,
+} from 'store/actions-types/currentUser';
 
 const currentUser = (
   state: CloudAR.Resource.User = <CloudAR.Resource.User>{},
-  action: CloudAR.Store.Action<CloudAR.Resource.User, CurrentUserType>
+  action: SetCurrentUser | DeleteCurrentUser
 ) => {
   switch (action.type) {
-    case CURRENT_USER_ACTION.SET:
+    case ActionType.SET:
       return {
         ...state,
-        ...action.data,
+        ...action.payload,
       };
 
-    case CURRENT_USER_ACTION.DELETE:
+    case ActionType.DELETE:
       return <CloudAR.Resource.User>{};
 
     default:

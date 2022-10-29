@@ -1,81 +1,69 @@
 import _ from 'lodash';
 import { combineReducers } from 'redux';
-import { hasOwnProperty } from 'utils/common';
+import {
+  DeleteResource,
+  OverwriteResource,
+  ResourceAction,
+  ResourceActionType,
+  SetResource,
+  UpdateResource,
+} from 'store/actions-types/resources';
 import { RESOURCE_NAME } from 'utils/constant/global';
 
-const defaultState = {
-  rows: {} as CloudAR.Resource.ResourceStructure<CloudAR.Resource.ResourceKey>,
-  count: 0 as number,
-};
+type ResourceKey = CloudAR.Resource.ResourceKey;
+type ResourceStructure<T extends ResourceKey> = CloudAR.Resource.ResourceStructure<T>;
 
-type Payload<K> = {
-  id: number;
-  data: K;
-};
+const createDefaultState = () => ({
+  data: new Map(),
+  page: {
+    size: 0,
+    total: 0,
+    totalPages: 0,
+    current: 0,
+  },
+});
 
-type Payloads<T extends CloudAR.Resource.ResourceKey> = CloudAR.Resource.ResourceStructure<T>;
-
-type ActionPayload<
-  T extends CloudAR.Resource.ResourceKey,
-  K extends CloudAR.Resource.ResourceMap[T]
-> = Payload<K> | Payloads<T> | number;
+const toArray = <T>(value: T) => (_.isArray(value) ? value : [value]) as T;
 
 const reducer =
-  <T extends CloudAR.Resource.ResourceKey, K extends CloudAR.Resource.ResourceMap[T]>(
-    resourceName: T
-  ) =>
-  (state: Payloads<T> = defaultState, action: CloudAR.Store.Action<ActionPayload<T, K>>) => {
-    let temp: Payloads<T> = defaultState;
-
+  <T extends ResourceKey>(resourceName: T) =>
+  (state: ResourceStructure<T> = createDefaultState(), action: ResourceAction<T>) => {
     switch (action.type) {
-      case `resources.${resourceName}.set`:
-        if (!hasOwnProperty(action.data, 'rows') || _.isNumber(action.data)) return state;
+      case ResourceActionType[resourceName].SET_RESOURCE:
+        action = action as SetResource<T>;
 
-        const data = _.isArray(action.data.rows) ? action.data.rows : [action.data.rows];
+        toArray(action.payload.data).forEach((value) => {
+          state.data.set(value.id, value);
+        });
 
-        return {
-          ...state,
-          rows: {
-            ...state.rows,
-            ..._.keyBy(data, 'id'),
-          },
-        };
+        return state;
 
-      case `resources.${resourceName}.update`:
-        if (hasOwnProperty(action.data, 'rows') || _.isNumber(action.data)) return state;
+      case ResourceActionType[resourceName].UPDATE_RESOURCE:
+        action = action as UpdateResource<T>;
 
-        return {
-          ...state,
-          rows: {
-            ...state.rows,
-            [action.data.id]: {
-              ...state.rows[action.data.id],
-              ...action.data.data,
-            },
-          },
-        };
+        state.data.set(action.payload.id, action.payload.data);
 
-      case `resources.${resourceName}.delete`:
-        if (!_.isNumber(action.data)) return state;
+        return state;
 
-        temp = _.cloneDeep(state);
+      case ResourceActionType[resourceName].DELETE_RESOURCE:
+        action = action as DeleteResource<T>;
 
-        delete temp.rows[action.data];
-        return temp;
+        state.data.delete(action.payload);
 
-      case `resources.${resourceName}.overwrite`:
-        if (!hasOwnProperty(action.data, 'rows') || _.isNumber(action.data)) return state;
+        return state;
 
-        const data1 = _.isArray(action.data.rows) ? action.data.rows : [action.data.rows];
-        let count = state.count;
+      case ResourceActionType[resourceName].OVERWRITE_RESOURCE:
+        action = action as OverwriteResource<T>;
 
-        if (hasOwnProperty(action.data, 'count') && _.isNumber(action.data.count))
-          count = +action.data.count;
+        state.data.clear();
 
-        return {
-          rows: _.keyBy(data1, 'id'),
-          count,
-        };
+        toArray(action.payload.data).forEach((value) => {
+          state.data.set(value.id, value);
+        });
+
+        state.page = action.payload.page;
+
+        return state;
 
       default:
         return state;
@@ -88,7 +76,7 @@ const allReducer = _.reduce(
     ...prev,
     [curr]: reducer(curr),
   }),
-  {} as Record<CloudAR.Resource.ResourceKey, ReturnType<typeof reducer>>
+  {} as Record<ResourceKey, ReturnType<typeof reducer>>
 );
 
-export default combineReducers<CloudAR.Resource.Resources>(allReducer);
+export default combineReducers(allReducer);

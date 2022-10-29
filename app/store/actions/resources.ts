@@ -1,90 +1,95 @@
+import { Dispatch } from 'redux';
+import {
+  DeleteResource,
+  OverwriteResource,
+  ResourceAction as Action,
+  ResourceActionType,
+  SetResource,
+  UpdateResource,
+} from 'store/actions-types/resources';
 import axios from 'store/axios';
 
-export const setResource = (resourceName: CloudAR.Resource.ResourceKey, data: unknown) => ({
-  type: `resources.${resourceName}.set`,
-  data,
-});
+type ResourceKey = CloudAR.Resource.ResourceKey;
+type Response<T extends ResourceKey> = {
+  Resource: CloudAR.Response.Resource<T>;
+  Resources: CloudAR.Response.Resources<T>;
+};
+type ResourceMap<T extends ResourceKey> = CloudAR.Resource.ResourceMap[T];
 
-export const updateResource = (resourceName: CloudAR.Resource.ResourceKey, data: unknown) => ({
-  type: `resources.${resourceName}.update`,
-  data, // { id, data }
-});
+export const setResource = <T extends ResourceKey>(resourceName: T, payload: unknown) =>
+  ({
+    type: ResourceActionType[resourceName].SET_RESOURCE,
+    payload,
+  } as SetResource<T>);
 
-export const overwriteResource = (resourceName: CloudAR.Resource.ResourceKey, data: unknown) => ({
-  type: `resources.${resourceName}.overwrite`,
-  data,
-});
+export const updateResource = <T extends ResourceKey>(resourceName: T, payload: unknown) =>
+  ({
+    type: ResourceActionType[resourceName].UPDATE_RESOURCE,
+    payload, // { id, data }
+  } as UpdateResource<T>);
 
-export const deleteResource = (resourceName: CloudAR.Resource.ResourceKey, data: unknown) => ({
-  type: `resources.${resourceName}.delete`,
-  data, // id
-});
+export const overwriteResource = <T extends ResourceKey>(resourceName: T, payload: unknown) =>
+  ({
+    type: ResourceActionType[resourceName].OVERWRITE_RESOURCE,
+    payload,
+  } as OverwriteResource<T>);
+
+export const deleteResource = <T extends ResourceKey>(resourceName: T, payload: unknown) =>
+  ({
+    type: ResourceActionType[resourceName].DELETE_RESOURCE,
+    payload, // id
+  } as DeleteResource<T>);
 
 export const getAllData =
-  <T extends CloudAR.Resource.ResourceKey>(resourceName: T, query = '', overwrite = true) =>
+  <T extends ResourceKey>(resourceName: T, query = '', overwrite = true) =>
   async () => {
-    const { data } = await axios.get<CloudAR.Resource.ResourceMap[T][]>(
-      `/${resourceName}?${query}`,
-      {
-        headers: {
-          resourceName,
-          overwrite,
-        },
-      }
-    );
+    const { data } = await axios.get<Response<T>['Resources']>(`/${resourceName}?${query}`, {
+      headers: {
+        resourceName,
+        overwrite,
+      },
+    });
 
-    return data as CloudAR.Resource.ResourceMap[T][];
+    return data.data as ResourceMap<T>[];
   };
 
 export const getDataById =
-  <T extends CloudAR.Resource.ResourceKey>(
-    resourceName: T,
-    id: number | string,
-    query = '',
-    overwrite = false
-  ) =>
+  <T extends ResourceKey>(resourceName: T, id: number | string, query = '', overwrite = false) =>
   async () => {
-    const { data } = await axios.get<CloudAR.Resource.ResourceMap[T]>(
-      `/${resourceName}/${id}?${query}`,
-      {
-        headers: {
-          resourceName,
-          overwrite,
-        },
-      }
-    );
+    const { data } = await axios.get<Response<T>['Resource']>(`/${resourceName}/${id}?${query}`, {
+      headers: {
+        resourceName,
+        overwrite,
+      },
+    });
 
-    return data as CloudAR.Resource.ResourceMap[T];
+    return data.data as ResourceMap<T>;
   };
 
 export const addData =
-  <T extends CloudAR.Resource.ResourceKey>(resourceName: T, payload: unknown) =>
-  async (dispatch: CloudAR.Store.AppDispatch) => {
-    const { data } = await axios.post<CloudAR.Resource.ResourceMap[T]>(
-      `/${resourceName}`,
-      payload,
-      {
-        headers: {
-          resourceName,
-        },
-      }
-    );
+  <T extends ResourceKey>(resourceName: T, payload: unknown) =>
+  async (dispatch: Dispatch<Action<T>>) => {
+    const { data } = await axios.post<Response<T>['Resource']>(`/${resourceName}`, payload, {
+      headers: {
+        resourceName,
+      },
+    });
 
     dispatch(
       updateResource(resourceName, {
-        id: data.id,
-        data,
+        id: data.data.id,
+        data: data.data,
       })
     );
 
-    return data as CloudAR.Resource.ResourceMap[T];
+    return data.data as ResourceMap<T>;
   };
 
 export const updateData =
-  <T extends CloudAR.Resource.ResourceKey>(resourceName: T) =>
+  <T extends ResourceKey>(resourceName: T) =>
   (id: number, update: unknown, query = '') =>
   async () => {
-    const { data } = await axios.patch<CloudAR.Resource.ResourceMap[T]>(
+    const { data } = await axios.patch<Response<T>['Resource']>(
       `/${resourceName}/${id}?${query}`,
       update,
       {
@@ -94,12 +99,12 @@ export const updateData =
       }
     );
 
-    return data as CloudAR.Resource.ResourceMap[T];
+    return data.data as ResourceMap<T>;
   };
 
 export const deleteData =
-  <T extends CloudAR.Resource.ResourceKey>(resourceName: T, id: number) =>
-  async (dispatch: CloudAR.Store.AppDispatch) => {
+  <T extends ResourceKey>(resourceName: T, id: number) =>
+  async (dispatch: Dispatch<Action<T>>) => {
     await axios.delete(`/${resourceName}/${id}`);
 
     dispatch(deleteResource(resourceName, id));
