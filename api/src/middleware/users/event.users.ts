@@ -1,19 +1,19 @@
 import asyncMw from 'express-asyncmw';
-import httpStatus from 'http-status';
 import _ from 'lodash';
 import repository from 'repository';
 import { USER_ROLE } from 'utils/constant';
 import { compareText } from 'utils/encryption';
-import { createNotFoundResponse, createOnlyAdminResponse } from 'utils/responses';
+import {
+  createNotFoundResponse,
+  createOnlyAdminResponse,
+  createUnauthorizedResponse,
+} from 'utils/responses';
 import { signAccessToken, verifyAccessToken } from 'utils/token';
 
 export const authMw = asyncMw(async (req, res, next) => {
   if (!req.headers.authorization) {
-    return res.status(401).json({
-      code: 401,
-      status: httpStatus['401_NAME'],
-      message: 'Unauthorized',
-    });
+    const response = createUnauthorizedResponse();
+    return res.status(response.code).json(response);
   }
 
   const authHeader = req.headers.authorization;
@@ -22,11 +22,8 @@ export const authMw = asyncMw(async (req, res, next) => {
   const isVerifiedToken = await verifyAccessToken(bearerToken);
 
   if (!isVerifiedToken) {
-    return res.status(401).json({
-      code: 401,
-      status: httpStatus['401_NAME'],
-      message: 'Invalid token',
-    });
+    const response = createUnauthorizedResponse('Invalid token');
+    return res.status(response.code).json(response);
   }
 
   req.userAuth = await repository.user.findOne(isVerifiedToken.id);
@@ -40,15 +37,12 @@ export const loginMw = asyncMw(async (req, res) => {
 
   if (!user) {
     const response = createNotFoundResponse('User');
-    return res.status(404).json(response);
+    return res.status(response.code).json(response);
   }
 
   if (!(await compareText(req.body.password, user.password))) {
-    return res.status(401).json({
-      code: 401,
-      status: httpStatus['401_NAME'],
-      message: 'Invalid password',
-    });
+    const response = createUnauthorizedResponse('Invalid password');
+    return res.status(response.code).json(response);
   }
 
   const token = signAccessToken(_.pick(user, ['id', 'role']), req.body.always);
@@ -59,7 +53,7 @@ export const loginMw = asyncMw(async (req, res) => {
 export const isAdminMw = asyncMw(async (req, res, next) => {
   if (!req.isAdmin) {
     const response = createOnlyAdminResponse('Only Admin Allowed');
-    return res.status(403).json(response);
+    return res.status(response.code).json(response);
   }
 
   return next();

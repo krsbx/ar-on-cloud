@@ -2,23 +2,29 @@ import type { Request } from 'express';
 import httpStatus from 'http-status';
 import _ from 'lodash';
 
-export const createGetResponse = (req: Request, data: unknown) => ({
-  code: req.statusCode ?? 200,
-  status: httpStatus[`${req.statusCode ?? 200}_NAME`],
-  data,
+export const generateCodeStatusResponse = (code: number) => ({
+  code,
+  status: httpStatus[`${code}_NAME`],
 });
 
-export const createGetsResponse = (req: Request, data: unknown) => {
+export const createGetResponse = <T>(req: Request, data: T) => ({
+  ...generateCodeStatusResponse(req.statusCode ?? 200),
+  data: data as Awaited<T>,
+});
+
+export const createGetsResponse = <T extends { count: number; rows: unknown[] }>(
+  req: Request,
+  data: T
+) => {
   const limit = +(req.query.limit === 'all' ? 1 : _.get(req.query, 'limit', 10));
   const page = +_.get(req.query, 'page', 0);
   const offset = page > 0 ? limit * (page - 1) : 0;
   const totalData = +_.get(data, 'count', 0);
-  const queriedData = _.get(data, 'rows', []);
+  const queriedData = _.get(data, 'rows', []) as T['rows'];
   const dataSize = queriedData.length < limit ? queriedData.length : limit;
 
   return {
-    code: 200,
-    status: httpStatus['200_NAME'],
+    ...generateCodeStatusResponse(req.statusCode ?? 200),
     data: queriedData,
     page: {
       size: dataSize,
@@ -29,14 +35,32 @@ export const createGetsResponse = (req: Request, data: unknown) => {
   };
 };
 
+export const createCreatedResponse = () => ({
+  ...generateCodeStatusResponse(201),
+  data: {},
+});
+
+export const createBadRequestResponse = (message = 'Bad Request') => ({
+  ...generateCodeStatusResponse(400),
+  message,
+});
+
+export const createUnauthorizedResponse = (message = 'Unauthorized') => ({
+  ...generateCodeStatusResponse(401),
+  message,
+});
+
+export const createOnlyAdminResponse = (message = 'Forbidden') => ({
+  ...generateCodeStatusResponse(403),
+  message,
+});
+
 export const createNotFoundResponse = (name: string) => ({
-  code: 404,
-  status: httpStatus['404_NAME'],
+  ...generateCodeStatusResponse(404),
   message: `${name} not found`,
 });
 
-export const createOnlyAdminResponse = (message?: string) => ({
-  code: 403,
-  status: httpStatus['403_NAME'],
-  message: message ?? 'Forbidden',
+export const createConflictResponse = (message: { message: string } | string) => ({
+  ...generateCodeStatusResponse(409),
+  ...(_.isObject(message) ? { ...message } : { message }),
 });

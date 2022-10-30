@@ -109,6 +109,7 @@
   },
   "exclude": ["node_modules"],
   "ts-node": {
+    "files": true,
     // Do not forget to `npm i -D tsconfig-paths`
     "require": ["tsconfig-paths/register"]
   }

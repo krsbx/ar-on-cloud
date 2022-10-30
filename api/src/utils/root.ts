@@ -1,3 +1,4 @@
+import { errorHandling } from 'config/error';
 import cors from 'cors';
 import express, { Express } from 'express';
 import { queryParserMw } from 'middleware/queryParser';
@@ -19,4 +20,6 @@ export default (app: Express) => {
   app.use('/profiles', profilesRoutes);
   app.use('/posts', postsRoutes);
   app.use('/comments', commentsRoutes);
+  // Error Response Handling
+  app.use(errorHandling);
 };

@@ -1,6 +1,7 @@
 import asyncMw from 'express-asyncmw';
 import _ from 'lodash';
 import repository from 'repository';
+import { sequentialPromiseResolver } from 'utils/promises';
 import { createGetResponse, createGetsResponse } from 'utils/responses';
 
 export const returnCommentMw = asyncMw(async (req, res) => {
@@ -11,20 +12,22 @@ export const returnCommentMw = asyncMw(async (req, res) => {
     }),
   });
 
-  return res.status(req.statusCode ?? 200).json(response);
+  return res.status(response.code).json(response);
 });
 
 export const returnCommentsMw = asyncMw(async (req, res) => {
+  const results = await sequentialPromiseResolver(
+    _.map(_.get(req.comments, 'rows', []), async (comment) => ({
+      ...(await repository.comment.modelToResource(comment)),
+      post: comment.post ? await repository.post.modelToResource(comment.post) : null,
+      user: comment.user ? await repository.user.modelToResource(comment.user) : null,
+    }))
+  );
+
   const response = createGetsResponse(req, {
-    rows: await Promise.all(
-      _.map(_.get(req.comments, 'rows', []), async (comment) => ({
-        ...(await repository.comment.modelToResource(comment)),
-        post: comment.post ? await repository.post.modelToResource(comment.post) : null,
-        user: comment.user ? await repository.user.modelToResource(comment.user) : null,
-      }))
-    ),
+    rows: results,
     count: _.get(req.comments, 'count', 0),
   });
 
-  return res.status(req.statusCode ?? 200).json(response);
+  return res.status(response.code).json(response);
 });

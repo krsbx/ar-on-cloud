@@ -30,7 +30,7 @@ export const ResourceActionType = {
 export type SetResource<T extends CloudAR.Resource.ResourceKey> = {
   type: typeof ResourceActionType[T]['SET_RESOURCE'];
   payload: {
-    data: CloudAR.Resource.ResourceMap[T][];
+    data: CloudAR.Resource.ResourceMap[T] | CloudAR.Resource.ResourceMap[T][];
     page: CloudAR.Resource.ResourceInfo;
   };
 };
@@ -46,7 +46,7 @@ export type UpdateResource<T extends CloudAR.Resource.ResourceKey> = {
 export type OverwriteResource<T extends CloudAR.Resource.ResourceKey> = {
   type: typeof ResourceActionType[T]['OVERWRITE_RESOURCE'];
   payload: {
-    data: CloudAR.Resource.ResourceMap[T][];
+    data: CloudAR.Resource.ResourceMap[T] | CloudAR.Resource.ResourceMap[T][];
     page: CloudAR.Resource.ResourceInfo;
   };
 };

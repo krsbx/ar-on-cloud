@@ -15,7 +15,7 @@ export const getPostMw = asyncMw(async (req, res, next) => {
 
   if (!post) {
     const response = createNotFoundResponse('Post');
-    return res.status(404).json(response);
+    return res.status(response.code).json(response);
   }
 
   req.post = post;
@@ -37,7 +37,7 @@ export const getPostsMw = asyncMw(async (req, res, next) => {
         ? {
             user: true,
           }
-        : {},
+        : undefined,
     }
   );
 
