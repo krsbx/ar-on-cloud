@@ -1,4 +1,4 @@
-import asyncMw from 'express-asyncmw';
+import { asyncMw } from 'express-asyncmw';
 import repository from 'repository';
 
 export const deleteProfileMw = asyncMw(async (req, res) => {
