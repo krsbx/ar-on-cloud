@@ -15,7 +15,7 @@ export const getUserMw = asyncMw(async (req, res, next) => {
 
   if (!user) {
     const response = createNotFoundResponse('User');
-    return res.status(404).json(response);
+    return res.status(response.code).json(response);
   }
 
   req.user = user;

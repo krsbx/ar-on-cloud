@@ -1,17 +1,15 @@
 import asyncMw from 'express-asyncmw';
-import httpStatus from 'http-status';
 import repository from 'repository';
+import { createBadRequestResponse } from 'utils/responses';
 
 export const createCommentMw = asyncMw(async (req, res, next) => {
   // If post id is not provided and there is no post, return 400
   if (!req.body.postId) {
     if (req.post) req.body.postId = req.post.id;
-    else
-      return res.status(400).json({
-        code: 400,
-        status: httpStatus['400_NAME'],
-        message: 'PostId is required',
-      });
+    else {
+      const response = createBadRequestResponse('postId is Required');
+      return res.status(response.code).json(response);
+    }
   }
 
   if (!req.isAdmin && req.body.userId !== req.userAuth.id) req.body.userId = req.userAuth.id;

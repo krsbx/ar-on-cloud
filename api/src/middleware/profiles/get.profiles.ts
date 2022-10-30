@@ -7,7 +7,7 @@ export const getProfileMw = asyncMw(async (req, res, next) => {
 
   if (!profile) {
     const response = createNotFoundResponse('Profile');
-    return res.status(404).json(response);
+    return res.status(response.code).json(response);
   }
 
   req.profile = profile;

@@ -1,15 +1,13 @@
 import asyncMw from 'express-asyncmw';
-import httpStatus from 'http-status';
 import repository from 'repository';
+import { createConflictResponse, createCreatedResponse } from 'utils/responses';
 
 export const createUserMw = asyncMw(async (req, res, next) => {
   const exist = await repository.user.checkEmailUsername(req.body.email, req.body.username);
   if (exist) {
-    return res.status(409).json({
-      code: 409,
-      status: httpStatus['409_NAME'],
-      ...exist,
-    });
+    const response = createConflictResponse(exist);
+
+    return res.status(response.code).json(response);
   }
 
   if (!req.isAdmin) delete req.body.role;
@@ -24,11 +22,8 @@ export const createUserMw = asyncMw(async (req, res, next) => {
   res.statusCode = 201;
 
   if (!req.userAuth) {
-    return res.status(201).json({
-      code: 201,
-      status: httpStatus['201_NAME'],
-      data: {},
-    });
+    const response = createCreatedResponse();
+    return res.status(response.code).json(response);
   }
 
   return next();

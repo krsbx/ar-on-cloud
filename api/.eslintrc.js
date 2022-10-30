@@ -24,17 +24,17 @@ module.exports = {
   },
   settings: {
     'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
+      '@typescript-eslint/parser': ['.ts', '.d.ts', '.tsx'],
     },
     'import/extensions': ['.js', '.jsx', '.tsx', '.ts'],
     'import/resolver': {
       typescript: {
         moduleDirectory: ['node_modules', 'src/'],
-        extensions: ['.js', '.jsx', '.ts', '.d.t.s', '.tsx'],
+        extensions: ['.js', '.jsx', '.ts', '.d.ts', '.tsx'],
       },
       node: {
         moduleDirectory: ['node_modules', 'src/'],
-        extensions: ['.js', '.jsx', '.ts', '.d.t.s', '.tsx'],
+        extensions: ['.js', '.jsx', '.ts', '.d.ts', '.tsx'],
       },
     },
   },

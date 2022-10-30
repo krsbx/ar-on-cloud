@@ -5,7 +5,7 @@ import { createOnlyAdminResponse } from 'utils/responses';
 export const deleteUserMw = asyncMw(async (req, res) => {
   if (req.userAuth.id !== +req.params.id && !req.isAdmin) {
     const response = createOnlyAdminResponse();
-    return res.status(403).json(response);
+    return res.status(response.code).json(response);
   }
 
   await repository.user.delete(req.params.id);

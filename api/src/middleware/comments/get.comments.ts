@@ -12,7 +12,7 @@ export const getCommentMw = asyncMw(async (req, res, next) => {
 
   if (!comment) {
     const response = createNotFoundResponse('Comment');
-    return res.status(404).json(response);
+    return res.status(response.code).json(response);
   }
 
   req.comment = comment;

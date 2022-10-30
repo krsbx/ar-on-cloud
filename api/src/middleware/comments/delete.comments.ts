@@ -5,7 +5,7 @@ import { createOnlyAdminResponse } from 'utils/responses';
 export const deleteCommentMw = asyncMw(async (req, res) => {
   if (req.userAuth.id !== req.comment.userId && !req.isAdmin) {
     const response = createOnlyAdminResponse();
-    return res.status(403).json(response);
+    return res.status(response.code).json(response);
   }
 
   await repository.comment.delete(req.params.id);
