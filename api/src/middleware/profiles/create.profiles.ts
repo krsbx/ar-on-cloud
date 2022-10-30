@@ -1,4 +1,4 @@
-import asyncMw from 'express-asyncmw';
+import { asyncMw } from 'express-asyncmw';
 import repository from 'repository';
 
 export const createProfileMw = asyncMw(async (req, res, next) => {
