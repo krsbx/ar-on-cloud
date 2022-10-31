@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import _ from 'lodash';
 import { hashText } from 'utils/encryption';
 import BaseRepository from './baseRepository';
-import { AnyRecord, ModelStructure, MODELS_NAME } from './models';
+import { AnyRecord, ModelStructure, MODELS_NAME } from './prisma-repo';
 
 class User extends BaseRepository(MODELS_NAME.USER) {
   public static async resourceToModel(resource: AnyRecord) {

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import BaseRepository from './baseRepository';
-import { AnyRecord, ModelStructure, MODELS_NAME } from './models';
+import { AnyRecord, ModelStructure, MODELS_NAME } from './prisma-repo';
 
 class Comment extends BaseRepository(MODELS_NAME.COMMENT) {
   public static async resourceToModel(resource: AnyRecord) {

@@ -15,7 +15,7 @@ import {
   ModelScalarFields,
   ModelStructure,
   ModelTypes,
-} from './models';
+} from './prisma-repo';
 
 /**
  * @param modelName - The model name
