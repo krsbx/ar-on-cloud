@@ -16,7 +16,8 @@ const SecondSection = () => {
         fontWeight={'bold'}
         id={'why-on-web'}
         fontSize={'26px'}
-        mb={'10px'}
+        pt={10}
+        mb={5}
       >
         why on Web?
       </Text>

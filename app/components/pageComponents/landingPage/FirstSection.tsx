@@ -16,7 +16,8 @@ const FirstSection = () => {
         fontWeight={'bold'}
         id={'learn-more'}
         fontSize={'26px'}
-        mb={'10px'}
+        pt={10}
+        mb={5}
       >
         Augmented Reality on Web
       </Text>

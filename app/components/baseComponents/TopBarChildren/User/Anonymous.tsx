@@ -1,42 +1,44 @@
-import React, { useMemo, useState } from 'react';
-import NextLink from 'next/link';
 import {
-  Stack,
+  Button,
+  ButtonProps,
   Link,
-  LinkProps,
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
   ModalOverlay,
+  Stack,
   Text,
-  useDisclosure,
   TextProps,
   useBreakpoint,
+  useDisclosure,
 } from '@chakra-ui/react';
+import React, { useMemo, useState } from 'react';
 import LoginModal from '../../modals/LoginModal';
 import RegisterModal from '../../modals/RegisterModal';
 
-const Anonymous: ReactFC = ({}) => {
+const Anonymous: ReactFC<Props> = ({ setIsMenuOpen }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
   const breakpoint = useBreakpoint('md');
   const isBase = useMemo(() => ['base', 'sm'].includes(breakpoint ?? 'md'), [breakpoint]);
 
-  const linkStyle: LinkProps = {
-    bg: isBase ? 'blackAlpha.400' : 'blackAlpha.100',
-    color: isBase ? 'white' : 'blackAlpha.600',
-    fontWeight: isBase ? 'bold' : 'semibold',
-    rounded: 'md',
-    py: 2,
-    px: 5,
-    transition: 'all 0.3s ease-in-out',
-    textAlign: 'center',
-    _hover: {
-      bg: isBase ? 'blackAlpha.100' : 'blackAlpha.300',
-    },
-  };
+  const buttonStyle: ButtonProps = useMemo(
+    () => ({
+      bg: isBase ? 'blackAlpha.400' : 'blackAlpha.100',
+      color: isBase ? 'white' : 'blackAlpha.600',
+      fontWeight: isBase ? 'bold' : 'semibold',
+      borderRadius: 'md',
+      p: 3,
+      minH: 12,
+      transition: 'all 0.3s ease-in-out',
+      _hover: {
+        bg: isBase ? 'blackAlpha.100' : 'blackAlpha.300',
+      },
+    }),
+    [isBase] // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
   const modalHeaderStyle = (inLogin: boolean) =>
     ({
@@ -48,28 +50,26 @@ const Anonymous: ReactFC = ({}) => {
   return (
     <React.Fragment>
       <Stack spacing={3} direction={isBase ? 'column' : 'row'}>
-        <NextLink href={'#register'} passHref>
-          <Link
-            {...linkStyle}
-            onClick={() => {
-              onOpen();
-              setIsLogin(false);
-            }}
-          >
-            Register
-          </Link>
-        </NextLink>
-        <NextLink href={'#login'} passHref>
-          <Link
-            {...linkStyle}
-            onClick={() => {
-              onOpen();
-              setIsLogin(true);
-            }}
-          >
-            Login
-          </Link>
-        </NextLink>
+        <Button
+          {...buttonStyle}
+          onClick={() => {
+            onOpen();
+            setIsLogin(false);
+            setIsMenuOpen?.(false);
+          }}
+        >
+          Register
+        </Button>
+        <Button
+          {...buttonStyle}
+          onClick={() => {
+            onOpen();
+            setIsLogin(true);
+            setIsMenuOpen?.(false);
+          }}
+        >
+          Login
+        </Button>
       </Stack>
       <Modal isOpen={isOpen} onClose={onClose} closeOnEsc isCentered>
         <ModalOverlay />
@@ -82,41 +82,39 @@ const Anonymous: ReactFC = ({}) => {
               textTransform={'uppercase'}
               direction={'row'}
             >
-              <NextLink href={'#register'} passHref>
-                <Link
-                  onClick={() => setIsLogin(false)}
-                  w={'100px'}
-                  textAlign={'center'}
-                  _focus={{
-                    outline: 'none',
-                  }}
-                  _hover={{
-                    textDecoration: 'none',
-                    backgroundColor: 'blackAlpha.100',
-                    borderRadius: 'md',
-                  }}
-                >
-                  <Text {...modalHeaderStyle(!isLogin)}>Register</Text>
-                </Link>
-              </NextLink>
+              <Link
+                onClick={() => setIsLogin(false)}
+                w={'100px'}
+                textAlign={'center'}
+                href={'#register'}
+                _focus={{
+                  outline: 'none',
+                }}
+                _hover={{
+                  textDecoration: 'none',
+                  backgroundColor: 'blackAlpha.100',
+                  borderRadius: 'md',
+                }}
+              >
+                <Text {...modalHeaderStyle(!isLogin)}>Register</Text>
+              </Link>
               <Text>|</Text>
-              <NextLink href={'#login'} passHref>
-                <Link
-                  onClick={() => setIsLogin(true)}
-                  w={'100px'}
-                  textAlign={'center'}
-                  _focus={{
-                    outline: 'none',
-                  }}
-                  _hover={{
-                    textDecoration: 'none',
-                    backgroundColor: 'blackAlpha.100',
-                    borderRadius: 'md',
-                  }}
-                >
-                  <Text {...modalHeaderStyle(isLogin)}>Login</Text>
-                </Link>
-              </NextLink>
+              <Link
+                onClick={() => setIsLogin(true)}
+                w={'100px'}
+                textAlign={'center'}
+                href={'#login'}
+                _focus={{
+                  outline: 'none',
+                }}
+                _hover={{
+                  textDecoration: 'none',
+                  backgroundColor: 'blackAlpha.100',
+                  borderRadius: 'md',
+                }}
+              >
+                <Text {...modalHeaderStyle(isLogin)}>Login</Text>
+              </Link>
             </Stack>
             <ModalCloseButton />
           </ModalHeader>
@@ -127,6 +125,10 @@ const Anonymous: ReactFC = ({}) => {
       </Modal>
     </React.Fragment>
   );
+};
+
+type Props = {
+  setIsMenuOpen?: ReactSetter<boolean>;
 };
 
 export default Anonymous;

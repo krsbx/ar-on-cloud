@@ -3,7 +3,7 @@ import _ from 'lodash';
 import React from 'react';
 import { AiOutlineBook } from 'react-icons/ai';
 
-const ARCards = React.memo(() => (
+const ARCards: ReactFC = () => (
   <GridItem
     maxWidth={{ md: '400px' }}
     height={'100px'}
@@ -38,11 +38,11 @@ const ARCards = React.memo(() => (
       </VStack>
     </Box>
   </GridItem>
-));
+);
 
 const PinnedAR = () => {
   return (
-    <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={5}>
+    <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={2} alignItems={'center'}>
       {_.map(Array(6), (_, id) => (
         <ARCards key={id} />
       ))}
