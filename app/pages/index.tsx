@@ -1,12 +1,16 @@
-import { Flex, Link, Text } from '@chakra-ui/react';
+import { Button, Flex, Link, Text } from '@chakra-ui/react';
 import { Footer } from 'components/general';
 import FirstSection from 'components/pageComponents/landingPage/FirstSection';
 import SecondSection from 'components/pageComponents/landingPage/SecondSection';
+import useScrollToElement from 'hooks/useScrollToElement';
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import NextLink from 'next/link';
 import React from 'react';
 
 const Home: NextPage = () => {
+  const scrollToElement = useScrollToElement();
+
   return (
     <React.Fragment>
       <Head>
@@ -41,18 +45,20 @@ const Home: NextPage = () => {
           >
             Use Augmented Reality on Website now!
           </Text>
-          <Link
+          <Button
             bg={'gray.200'}
             transition={'all 0.3s ease-in-out'}
             borderRadius={'md'}
             p={3}
-            href={'#learn-more'}
+            minH={12}
             _hover={{
               bg: 'gray.300',
+              my: 3,
             }}
+            onClick={() => scrollToElement('learn-more')}
           >
             Learn More!
-          </Link>
+          </Button>
         </Flex>
         <FirstSection />
         <SecondSection />
@@ -71,13 +77,14 @@ const Home: NextPage = () => {
           </Text>
           <Flex my={5}>
             <Link
+              as={NextLink}
+              href={'/getting-started'}
               bg={'whiteAlpha.600'}
               borderRadius={'md'}
               boxShadow={'lg'}
               transition={'all 0.3s ease-in-out'}
               p={3}
               px={4}
-              href={'/getting-started'}
               _hover={{
                 bg: 'whiteAlpha.900',
               }}

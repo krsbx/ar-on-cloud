@@ -1,5 +1,6 @@
-import { Box, Divider, Flex, Grid, GridItem, Link, Stack, Switch, Text } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, Grid, GridItem, Stack, Switch, Text } from '@chakra-ui/react';
 import { Footer } from 'components/general';
+import useScrollToElement from 'hooks/useScrollToElement';
 import _ from 'lodash';
 import type { NextPage } from 'next';
 import Head from 'next/head';
@@ -7,6 +8,7 @@ import React, { useState } from 'react';
 import { CREATOR_SECTION, VIEWER_SECTION } from 'utils/constant/pages/gettingStarted';
 
 const AboutMe: NextPage = () => {
+  const scrollToElement = useScrollToElement();
   const [isCreator, setIsCreator] = useState(false);
 
   return (
@@ -43,18 +45,20 @@ const AboutMe: NextPage = () => {
           >
             Use Augmented Reality on Website now!
           </Text>
-          <Link
+          <Button
             bg={'gray.200'}
             transition={'all 0.3s ease-in-out'}
             borderRadius={'md'}
-            href={'#getting-started'}
             p={3}
+            minH={12}
             _hover={{
               bg: 'gray.300',
+              my: 3,
             }}
+            onClick={() => scrollToElement('getting-started')}
           >
             Create Your AR Now!
-          </Link>
+          </Button>
         </Flex>
         <Flex
           width={{ base: '90%', md: '2xl', lg: '3xl' }}
